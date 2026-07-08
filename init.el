@@ -28,19 +28,13 @@
 (require 'terminal)
 (require 'os)
 (require 'apps)
+(require 'local)
 
                                         ; lang
-(require 'lang-general)
-(require 'lang-org)
+(require 'init-lang)
+(require 'init-org)
 
                                         ; local
-(require 'chord-highlight)
-(require 'org-wc-diff)
-(setq org-wc-diff-tracked-files '("D:/github/notes.org/2026.org"))
-(global-org-wc-diff-mode 1)
-(require 'send-to-emacs)
-(require 'org-hydrus)
-(setq org-hydrus-api-key "5e78757309d56aed5329e0c26a73df6d74d063d646f435d0187e955d07f76f97")
 
 (message "emacs init time %s" (emacs-init-time))
 

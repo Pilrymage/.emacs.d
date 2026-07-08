@@ -216,6 +216,6 @@
 (use-package anki-editor :defer t)
 
 
-(provide 'lang-general)
+(provide 'init-lang)
 
 ;;; lang/general.el ends here

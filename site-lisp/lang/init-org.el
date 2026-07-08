@@ -339,6 +339,6 @@
 (provide 'init-org)
 ;; Babel
 
-(provide 'lang-org)
+(provide 'init-org)
 
 ;;; lang/org.el ends here
