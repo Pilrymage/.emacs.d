@@ -1,0 +1,277 @@
+* Imported Feeds            :elfeed:
+** AI 专题                                          :translate_title:
+*** [[https://openai.com/news/rss.xml][OpenAI 博客]]                                    :ignore:
+*** [[https://deepmind.google/blog/rss.xml][Google DeepMind]]      :ignore:
+*** [[https://blog.google/technology/ai/rss/][Google AI Blog]]     :ignore:
+*** [[https://rss.arxiv.org/rss/cs.AI][arXiv AI]]                                                       :ignore:
+*** [[https://rss.arxiv.org/rss/cs.LG][arXiv 机器学习]]            :ignore:
+*** [[https://rss.arxiv.org/rss/cs.CL][arXiv NLP]]
+*** [[https://rss.arxiv.org/rss/cs.CV][arXiv 计算机视觉]]          :ignore:
+*** [[https://hnrss.org/newest?q=AI][Hacker News AI]]              :ignore:
+*** [[https://hnrss.org/newest?q=LLM][Hacker News LLM]]
+*** [[https://hnrss.org/newest?q=OpenClaw][Hacker News OpenClaw]]  :ignore:
+*** [[https://huggingface.co/blog/feed.xml][Hugging Face 博客]]
+*** [[https://stability.ai/news?format=rss][Stability AI]]         :ignore:
+*** [[https://simonwillison.net/atom/everything/][Simon Willison's Blog]]
+** 英文技术社区                                     :translate_title:
+*** [[https://hnrss.org/frontpage][Hacker News 首页]]              :ignore:
+*** [[https://hnrss.org/best][Hacker News 最佳]]
+*** [[https://hnrss.org/ask][Hacker News Ask]]          :translate_content:
+*** [[https://hnrss.org/show][Hacker News Show]]        :translate_content:
+** 中文技术社区
+*** [[https://www.jiqizhixin.com/rss][机器之心]]                   :ignore:
+*** [[https://linux.do/latest.rss][LinuxDo 最新话题]]
+*** [[https://linux.do/top.rss][LinuxDo 热门话题]]
+*** [[https://www.v2ex.com/feed/tab/hot.xml][V2EX 最热]]
+*** [[https://www.v2ex.com/feed/tab/tech.xml][V2EX 技术]]
+*** [[https://sspai.com/feed][少数派]]
+*** [[https://emacs-china.org/latest.rss][Emacs China]]           :essence:
+** 其他技术                                                :translate_title:
+*** [[https://qiita.com/popular-items/feed][Qiita - 人気の記事]] 
+*** [[https://zenn.dev/feed][Zennのトレンド]] 
+** 新闻资讯     
+*** [[https://www.ithome.com/rss/][IT之家]]
+*** [[https://hellogithub.com/rss][HelloGitHub 月刊]]
+*** [[http://www.ptyqm.com/feed][PT邀请码网]]
+** 科技媒体                                         :translate_title:
+*** [[https://techcrunch.com/feed/][TechCrunch]]
+*** [[https://www.theverge.com/rss/index.xml][The Verge]]
+*** [[https://www.wired.com/feed/rss][Wired]]        
+*** [[https://feeds.arstechnica.com/arstechnica/index][Ars Technica]]
+*** [[https://www.technologyreview.com/feed/][MIT Technology Review]]
+** 安全资讯                                         :translate_title:
+*** [[https://krebsonsecurity.com/feed/][Krebs on Security]]
+*** [[https://feeds.feedburner.com/TheHackersNews][The Hacker News]]
+*** [[https://www.schneier.com/feed/][Schneier on Security]]
+*** [[https://www.cisa.gov/news.xml][CISA News]]
+*** [[https://security.googleblog.com/atom.xml][Google Security Blog]]
+*** [[https://ctftime.org/event/list/upcoming/rss/][CTFtime.org: upcoming CTF events]]
+** 中文安全资讯                                                    
+*** [[https://www.freebuf.com/feed][FreeBuf]]
+*** [[https://api.anquanke.com/data/v1/rss][安全客]]
+** 前端 & 设计                                      :translate_title:ignore:
+*** [[https://www.smashingmagazine.com/feed/][Smashing Magazine]]
+*** [[https://alistapart.com/main/feed/][A List Apart]]
+*** [[https://tympanus.net/codrops/feed/][Codrops]]
+*** [[https://css-tricks.com/feed/][CSS-Tricks]]
+*** [[https://astro.build/rss.xml][Astro Blog]]
+*** [[https://svelte.dev/blog/rss.xml][Svelte Blog]]
+*** [[https://nextjs.org/feed.xml][Next.js Blog]]
+*** [[https://nuxt.com/blog/rss.xml][Nuxt Blog]]
+*** [[https://tailwindcss.com/feeds/feed.xml][Tailwind CSS Blog]]
+*** [[https://dev.to/feed][Dev.to]]
+*** [[https://developer.chrome.com/blog/feed.xml][Chrome Developer Blog]]
+*** [[https://dribbble.com/shots/popular.rss][Dribbble Popular]]
+*** [[https://www.producthunt.com/feed][Product Hunt]]
+** 编程语言官方博客                                 :translate_title:ignore:
+*** [[https://react.dev/rss.xml][React Blog]]
+*** [[https://blog.vuejs.org/feed.rss][Vue Blog]]
+*** [[https://blog.rust-lang.org/feed.xml][Rust Blog]]
+*** [[https://go.dev/blog/feed.atom][Go Blog]]
+*** [[https://blog.python.org/feeds/posts/default][Python Blog]]
+*** [[https://nodejs.org/en/feed/blog.xml][Node.js Blog]]
+*** [[https://deno.com/blog/feed.xml][Deno Blog]]
+*** [[https://devblogs.microsoft.com/typescript/feed/][TypeScript Blog]]
+*** [[https://www.swift.org/atom.xml][Swift Blog]]
+*** [[https://blog.jetbrains.com/kotlin/feed/][Kotlin Blog]]
+** 大厂技术博客                                     :translate_title:ignore:
+*** [[https://github.blog/feed/][GitHub Blog]]
+*** [[https://netflixtechblog.com/feed][Netflix Tech Blog]]
+*** [[https://aws.amazon.com/blogs/aws/feed/][AWS Blog]]
+*** [[https://blog.cloudflare.com/rss/][Cloudflare Blog]]
+*** [[https://developers.googleblog.com/feeds/posts/default/][Google Developers]]
+*** [[https://hacks.mozilla.org/feed/][Mozilla Hacks]]
+*** [[https://vercel.com/atom][Vercel Blog]]
+*** [[https://supabase.com/rss.xml][Supabase Blog]]
+*** [[https://stripe.com/blog/feed.rss][Stripe Blog]]
+*** [[https://engineering.atspotify.com/feed/][Spotify Engineering]]
+*** [[https://engineering.fb.com/feed/][Meta Engineering]]
+** 技术周刊                                         :translate_title:ignore:
+*** [[https://javascriptweekly.com/rss/][JavaScript Weekly]]
+*** [[https://this-week-in-rust.org/atom.xml][This Week in Rust]]
+*** [[https://golangweekly.com/rss/][Golang Weekly]]
+*** [[https://blog.bytebytego.com/feed][ByteByteGo]]
+** 学术论文                                                :translate_title:
+*** [[https://www.nature.com/nature.rss][Nature]]
+** 摸鱼                                                    :translate_title:
+*** [[https://www.urbandictionary.com/daily.rss][Urban Word of the Day]] 
+*** [[https://knowyourmeme.com/memes/submissions.rss][Know Your Meme Entries - Submissions]] 
+** Reddit                                                 :translate_title:
+*** [[https://old.reddit.com/r/emacs/.rss][r/Emacs]]
+*** [[https://old.reddit.com/r/hackintosh/.rss][r/Hackintosh]]     :ignore:
+** 中文博客                                                       :essence:
+*** [[https://feeds.feedburner.com/chitsaou][鴨七・chitsaou]]
+*** [[https://www.raychase.net/feed][四火的唠叨]]
+*** [[http://feeds.feedburner.com/ruanyifeng][阮一峰的网络日志]]  :essence:
+*** [[http://lilydjwg.is-programmer.com/posts.rss][依云's Blog]]
+*** [[https://kidsseeghosts.substack.com/feed][BLACK STACK 黑栈]]
+** Telegram
+*** [[http://localhost:1200/telegram/channel/jnu983][暨南報社 - Telegram]]
+*** [[http://localhost:1200/telegram/channel/douban_read][豆瓣精选 - Telegram]]
+*** [[http://localhost:1200/telegram/channel/wxbyg][微信搬运工 - Telegram]] :essence:ignore:
+*** [[http://localhost:1200/telegram/channel/jike_collection][即刻精选 - Telegram]]
+*** [[http://localhost:1200/telegram/channel/zhihu_bazaar][知乎大巴扎 - Telegram]] :ignore:
+*** [[http://localhost:1200/telegram/channel/fucku_idiot][简中互联网废物大赏 - Telegram]] :ignore:
+*** [[http://localhost:1200/telegram/channel/qunyouwen][群友问 - Telegram]]
+** 知乎                                                     :essence:ignore:
+文章：http://localhost:1200/zhihu/posts/people/<用户名>
+动态：http://localhost:1200/zhihu/people/activities/<用户名>
+*** [[http://localhost:1200/zhihu/people/activities/shinkusama][真紅家的水銀燈]]
+*** [[http://localhost:1200/zhihu/people/activities/shan-nan-36-70][盖菈]]
+*** [[http://localhost:1200/zhihu/people/activities/MarryMea][赵泠]]
+*** [[http://localhost:1200/zhihu/people/activities/pansz][pansz​]]
+*** [[http://localhost:1200/zhihu/people/activities/catchen][Cat Chen]]
+*** [[http://localhost:1200/zhihu/posts/people/fu-lan-ke-yang][弗兰克扬（文章）]]
+*** [[http://localhost:1200/zhihu/people/activities/zengjiaplus][曾加]]
+*** [[http://localhost:1200/zhihu/people/activities/maigo][王赟 Maigo]]
+*** [[http://localhost:1200/zhihu/people/activities/polyhedron][polyhedron]]
+*** [[http://localhost:1200/zhihu/people/activities/gui-ling-chang][归伶昌​]]
+*** [[http://localhost:1200/zhihu/people/activities/jiang-yuan-77][姜源]]
+*** [[http://localhost:1200/zhihu/people/activities/gao-lin-54-88][高林]]
+*** [[http://localhost:1200/zhihu/people/activities/sakuraayane_justice][甚谁]]
+*** [[http://localhost:1200/zhihu/people/activities/xiao-ru-4-86][小如]]
+*** [[http://localhost:1200/zhihu/people/activities/Masaki.Ryuu][東雲正樹]]
+*** [[http://localhost:1200/zhihu/people/activities/marisa.moe][圆角骑士魔理沙​]]
+*** [[http://localhost:1200/zhihu/people/activities/L.M.Sherlock][Thoughts Memo​]]
+*** [[http://localhost:1200/zhihu/people/activities/long-ya-38][九乡河龙牙]]
+*** [[http://localhost:1200/zhihu/posts/people/liu-ms][刘月半]]（文章）
+*** [[http://localhost:1200/zhihu/people/activities/ice1000][抽象千里冰封]]
+*** [[http://localhost:1200/zhihu/people/activities/chcgj][乌鸦炸酱面]]
+*** [[http://localhost:1200/zhihu/people/activities/hongbo_zhang][张宏波]] :ignore:
+*** [[http://localhost:1200/zhihu/posts/people/pcw-70][pcw]]
+*** [[http://localhost:1200/zhihu/posts/people/yinshoufu][殷守甫]]
+*** [[http://localhost:1200/zhihu/posts/people/saber-73-79][saber]]
+*** [[http://localhost:1200/zhihu/posts/people/yuan-xi-sun][元锡损]]
+*** [[http://localhost:1200/zhihu/posts/people/yang-zheng-zhu-3][rektboiz]]
+*** [[http://localhost:1200/zhihu/posts/people/francoisz][周浩​]]
+*** [[http://localhost:1200/zhihu/posts/people/mansour-12][Mansour]]
+*** [[http://localhost:1200/zhihu/posts/people/gui-duo-da-lai-zuo][圭多达莱佐]]
+*** [[http://localhost:1200/zhihu/posts/people/hui-dan-qin-de-pang-zi][荆公门下东坡首徒]]
+*** [[http://localhost:1200/zhihu/posts/people/wang-zhe-12-22-75][八云的饭团]]
+*** [[http://localhost:1200/zhihu/posts/people/fei-mao-tang-mu-60][肥貓湯姆]]
+*** [[http://localhost:1200/zhihu/posts/people/si-wang-54][烟之骑士蕾姆]]
+*** [[http://localhost:1200/zhihu/posts/people/LastZeit][momo]]
+*** [[http://localhost:1200/zhihu/posts/people/lin-ling-43-27-55][林凌]]
+*** [[http://localhost:1200/zhihu/posts/people/qianwanpeng][钱乎]]
+*** [[http://localhost:1200/zhihu/posts/people/sigon-55][Sigon]]
+*** [[http://localhost:1200/zhihu/posts/people/yongle-li-86][Triborg]]
+*** [[http://localhost:1200/zhihu/posts/people/bi-xiao-tian-99][毕导]]
+*** [[http://localhost:1200/zhihu/posts/people/phosphates-30][磷酸君Phosphates]]
+*** [[http://localhost:1200/zhihu/posts/people/zhao-xue-hao-95][赵学浩]]
+*** [[http://localhost:1200/zhihu/posts/people/li-a-ling][李阿玲]]
+*** [[http://localhost:1200/zhihu/posts/people/sheng-wei-shi-47][勝爲士]]
+*** [[http://localhost:1200/zhihu/posts/people/cotton_w][cotton]]
+*** [[http://localhost:1200/zhihu/posts/people/huo-gu-itpang-zi][硅谷IT胖子]]
+*** [[http://localhost:1200/zhihu/posts/people/nell][nell nell]]
+*** [[http://localhost:1200/zhihu/posts/people/limingyang666][李明阳]]
+*** [[http://localhost:1200/zhihu/posts/people/stephen-daedalus-34][不动的推动者]]​
+*** [[http://localhost:1200/zhihu/posts/people/GFCTS_554077074][chenzhe]]
+*** [[http://localhost:1200/zhihu/posts/people/ling-jian-94][灵剑]]
+*** [[http://localhost:1200/zhihu/posts/people/qian-xie-ying-73][千叶]]
+*** [[http://localhost:1200/zhihu/posts/people/skywind3000][韦易笑]]
+*** [[http://localhost:1200/zhihu/posts/people/yed-46][酸菜鱼]]
+*** [[http://localhost:1200/zhihu/posts/people/GalAster][酱紫君]]
+*** [[http://localhost:1200/zhihu/posts/people/liu-wei-ran-8-34][刘巍然-学酥]]
+*** [[http://localhost:1200/zhihu/posts/people/Homeros-Shakespeare][Homeros]]
+*** [[http://localhost:1200/zhihu/posts/people/trebor-19][Trebor]]
+*** [[http://localhost:1200/zhihu/posts/people/qinlili233][琴梨梨OvO]]
+*** [[http://localhost:1200/zhihu/posts/people/tuo-qia-ma-ke-zhi-guan][托卡马克之冠]]
+*** [[http://localhost:1200/zhihu/posts/people/ldbeth][LdBeth]]
+*** [[http://localhost:1200/zhihu/posts/people/be5invis][Belleve]]
+*** [[http://localhost:1200/zhihu/posts/people/he-jie-ming-7][摩砂学]]
+*** [[http://localhost:1200/zhihu/posts/people/nan-jue-tu][男爵兔]]
+
+
+** Translated feeds :translated:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/8ac686f964c49222359a7e2418b56a97.xml][[TL] M-x emacs-reddit]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://old.reddit.com/r/emacs/.rss
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/3c272c3d7d43f722829a772cd5d485d2.xml][[TL] Know Your Meme Entries - Submissions]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://knowyourmeme.com/memes/submissions.rss
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/d09e630ae3737d4ae281939866f973dd.xml][[TL] Urban Word of the Day]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://www.urbandictionary.com/daily.rss
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/b6bc2f24a75a5f91107b36b8eb60f4cf.xml][[TL] Nature]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://www.nature.com/nature.rss
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/2566f13d75ec98a9ff3ad3cf73410d63.xml][[TL] CTFtime.org: upcoming CTF events]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://ctftime.org/event/list/upcoming/rss/
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/64cd63f14639d138fcd9b7c71404762e.xml][[TL] Google Online Security Blog]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://security.googleblog.com/atom.xml
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/1801ac6a9838d1a917c174026ad79e23.xml][[TL] CISA News]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://www.cisa.gov/news.xml
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/6607bb13cd87a6636c1bb6b9c82e2b3c.xml][[TL] Schneier on Security]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://www.schneier.com/feed/
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/d529ee07a31d4053c3d3914adab6a72a.xml][[TL] The Hacker News]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://feeds.feedburner.com/TheHackersNews
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/27cf5ce3f0747a1ebd39345cad612a52.xml][[TL] Krebs on Security]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://krebsonsecurity.com/feed/
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/4a09f6c25eb5354938187e34d8b1be76.xml][[TL] MIT Technology Review]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://www.technologyreview.com/feed/
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/2d3794715288ef709eae3df1ca24597a.xml][[TL] Ars Technica - All content]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://feeds.arstechnica.com/arstechnica/index
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/196f73e8cf4330017ab92ef17541ebea.xml][[TL] The Verge]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://www.theverge.com/rss/index.xml
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/61564fca47e7cc4629bcf112ae855f4f.xml][[TL] TechCrunch]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://techcrunch.com/feed/
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/51e20db6f6a2b66a49436fe57ff0dbc3.xml][[TL] Zennのトレンド]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://zenn.dev/feed
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/60508d99d031ee9d5acd057c74bc0291.xml][[TL] Qiita - 人気の記事]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://qiita.com/popular-items/feed
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/43e8d465bb1d54e3e20705275a04c90f.xml][[TL] Hacker News: Show HN]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://hnrss.org/show
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/a7ed0530d455a0c7ea05d3f694213e16.xml][[TL] Hacker News: Ask HN]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://hnrss.org/ask
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/3d47f6a071f9d449ad55c2dfdade9ca2.xml][[TL] Hacker News: Front Page]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://hnrss.org/frontpage
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/a34ee2a885866974aa1f1f41131ac7b6.xml][[TL] Simon Willison's Weblog]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://simonwillison.net/atom/everything/
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/f3812e57a6e23ed746e5c82a0a176ee3.xml][[TL] Hugging Face - Blog]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://huggingface.co/blog/feed.xml
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/baffd6e07c26fa77d7bcab3e4f7f7bb4.xml][[TL] Hacker News - Newest: "LLM"]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://hnrss.org/newest?q=LLM
+    :END:
+*** [[file:///c:/Users/pilrymage/.elfeed/translated/5a06e35a5a0fd6fc85d05bff0f84fcdf.xml][[TL] cs.CL updates on arXiv.org]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://rss.arxiv.org/rss/cs.CL
+    :END:

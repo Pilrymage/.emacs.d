@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: LaTeX inline math
+# key: im
+# --
+\\\(${1:formula}\\\)$0

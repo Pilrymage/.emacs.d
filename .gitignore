@@ -1,0 +1,59 @@
+# Native compilation
+*.eln
+
+# Byte-compiled
+*.elc
+
+# straight.el — managed by straight, not committed
+straight/
+
+# ELPA packages
+elpa/
+
+# Backups and auto-saves
+backups/
+auto-save-list/
+*~
+\#*\#
+
+# Cache directories (runtime state, not config)
+cache/
+data/
+
+# Emacs server / daemon sockets
+server/
+
+# Personal state (recent files, ido history, places, bookmarks, etc.)
+recentf
+ido.last
+places
+history
+url/
+
+# eshell history
+eshell/history
+eshell/lastdir
+
+# Rime user data (synced separately)
+rime/sync/
+
+# Custom file (managed by M-x customize — commit if you want tracked settings)
+# custom.el
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Emacs network security
+network-security.data
+
+# Org-mode id locations (auto-generated)
+.org-id-locations
+
+# Emacs.desktop / lock files
+.emacs.desktop
+.emacs.desktop.lock
+/rime/
+/librime/
+/emojis/
+/tree-sitter/
