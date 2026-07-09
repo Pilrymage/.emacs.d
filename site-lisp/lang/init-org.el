@@ -88,6 +88,7 @@
 (use-package orgit-forge
   :defer t)
 (use-package org-download
+  :defer t
   :config
   ;; 关键修改：必须使用 setq-default 全局修改这两个 buffer-local 变量
   (setq-default org-download-image-dir "./images")
@@ -110,7 +111,7 @@
 
 
 (use-package org-journal
-  :ensure t
+  :defer t
   :config
   (setq org-journal-file-type 'yearly)    ; 就要一年的
   (setq org-journal-date-format "%Y/%m/%d W%W D%j（%a）")
@@ -236,7 +237,7 @@
   )
 
 (use-package auctex
-  :ensure t)
+  :defer t)
 (use-package org-appear
   :ensure t
   :hook (org-mode . org-appear-mode)

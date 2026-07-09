@@ -9,10 +9,7 @@
       inhibit-startup-screen t
       auto-mode-case-fold nil)
 
-(push '(tool-bar-lines . 0) default-frame-alist)
-
 (setq frame-resize-pixelwise t
-      frame-inhibit-implied-resize t
       tab-width 4
       idle-update-delay 1.0
       fast-but-imprecise-scrolling t
@@ -24,7 +21,6 @@
 (setq highlight-nonselected-windows nil)
 (set-locale-environment "en_US.UTF-8")
 (setenv "LANG" "en_US.UTF-8")
-
 
 (setq initial-frame-alist '((top . 0.5)
                             (left . 0.5)
@@ -44,13 +40,8 @@
   "Root directory for data files.")
 (defvar cache-dir (file-name-as-directory (expand-file-name "cache" user-emacs-directory))
   "Root directory for cache files.")
-(defvar user-dir (expand-file-name "~/.emacs.d")
-  "Canonical user Emacs directory.")
 
 (setq byte-compile-warnings '(not interactive-only))
-
-;; gnupg
-(custom-set-variables '(epg-gpg-program "C:/Users/pilrymage/scoop/apps/gnupg/current/bin/gpg.EXE"))
 
 (use-package better-defaults)
 

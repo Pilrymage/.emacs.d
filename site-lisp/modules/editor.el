@@ -148,13 +148,15 @@
 ;; Ensure `evil-shift-width' always matches `tab-width'; evil does not police
 ;; this itself, so we must.
 (use-package evil-surround
-  :ensure t
+  :defer t
+  :hook (after-init . evil-surround-mode)
   :config
   (global-evil-surround-mode 1)
   (add-to-list 'evil-surround-pairs-alist '(?$ . ("\\(" . "\\)"))))
 
 (use-package evil-commentary
-  :ensure t
+  :defer t
+  :hook (after-init . evil-surround-mode)
   :config
   (evil-commentary-mode))
 (use-package evil-args
@@ -204,7 +206,8 @@
   :defer t)
 (use-package evil-numbers
   :defer t)
-(use-package evil-textobj-anyblock)
+(use-package evil-textobj-anyblock
+  :defer t)
 (use-package evil-traces
   :config (evil-traces-mode))
 (use-package exato

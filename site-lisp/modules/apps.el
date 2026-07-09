@@ -1,7 +1,7 @@
 ;;; modules/apps.el --- Productivity apps -*- lexical-binding: t; -*-
 
 (use-package elfeed
-  :ensure t
+  :defer t
   :config
   (setq elfeed-curl-extra-arguments '("-xhttp://localhost:7897"))
   (setq elfeed-search-trailing-width 20)
@@ -15,10 +15,12 @@
 
 
 (use-package verb
+  :defer t
   :mode ("\\.org\\'" . org-mode)
   :general (my/org-leader-def "r" '(:keymap verb-command-map :which-key "verb")))
 
 (use-package telega
+  :defer t
   :config
   (with-eval-after-load 'evil
     (evil-set-initial-state 'telega-mode 'emacs))

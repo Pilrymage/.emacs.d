@@ -17,6 +17,9 @@
 Platform-specific: uses `D:/github/notes.org` on Windows,
 `~/notes.org` elsewhere.")
 
+(if my/windows-p
+    (custom-set-variables '(epg-gpg-program "C:/Program Files/GnuPG/bin/gpg.EXE")))
+
 (defconst my/open-command
   (cond (my/macos-p   "open")
         (my/linux-p   "xdg-open")

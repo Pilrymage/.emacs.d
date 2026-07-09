@@ -47,7 +47,7 @@
 
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
-(use-package el-patch :straight t)
+;; (use-package el-patch :straight t)
 
 (add-hook 'emacs-startup-hook
           (lambda ()

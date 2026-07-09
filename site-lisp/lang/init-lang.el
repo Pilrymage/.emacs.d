@@ -41,17 +41,17 @@
   :states 'normal
   :prefix "SPC n")
 (my/agda-leader-def
-  "l" 'agda2-load
-  "b" 'agda2-previous-goal
-  "f" 'agda2-next-goal
-  "c" 'agda2-make-case ; case split
-  "g" 'agda2-give      ; fill in hole
-  "r" 'agda2-refine    ; refine with constructor 
-  "a" 'agda2-mimer-maybe-all           ; refine with constructor 
-  "," 'agda2-goal-and-context          ; goal type and context
-  "." 'agda2-goal-and-context-and-inferred    ; goal type, context, and inferred type
-  "h" 'agda2-helper-function-type
-  )
+ "l" 'agda2-load
+ "b" 'agda2-previous-goal
+ "f" 'agda2-next-goal
+ "c" 'agda2-make-case ; case split
+ "g" 'agda2-give      ; fill in hole
+ "r" 'agda2-refine    ; refine with constructor 
+ "a" 'agda2-mimer-maybe-all           ; refine with constructor 
+ "," 'agda2-goal-and-context          ; goal type and context
+ "." 'agda2-goal-and-context-and-inferred    ; goal type, context, and inferred type
+ "h" 'agda2-helper-function-type
+ )
 (add-to-list 'auto-mode-alist '("\\.agda\\'" . agda2-mode))
 (add-to-list 'auto-mode-alist '("\\.lagda.md\\'" . agda2-mode))
 (when-let ((agda-mode (executable-find "agda-mode")))
@@ -159,8 +159,8 @@
 (use-package markdown-toc :defer t)
 ;;nix               ; I hereby declare "nix geht mehr!"
 ;;ocaml             ; an objective camel
-(use-package tuareg :ensure t)
-(use-package haskell-mode :ensure t)
+(use-package tuareg :defer t)
+(use-package haskell-mode :defer t)
 ;;(org +dragndrop +journal +hugo +present +pomodoro)               ; contacts 与 jupyter 还没相活
 (use-package htmlize
   :defer t)

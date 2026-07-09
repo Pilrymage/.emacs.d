@@ -12,15 +12,18 @@
   :config
   (global-org-wc-diff-mode 1))
 
-(use-package send-to-emacs)
+(use-package send-to-emacs
+  :defer t)
 
 (use-package org-hydrus
+  :defer t
   :config
   (setq org-hydrus-api-key (my/auth-get "hydrus")))
 
 
 
 (use-package elfeed-translate
+  :defer t
   :straight (elfeed-translate
              ;; :type nil
              ;; :host github
