@@ -15,6 +15,7 @@ backups/
 auto-save-list/
 *~
 \#*\#
+.#*
 
 # Cache directories (runtime state, not config)
 cache/
