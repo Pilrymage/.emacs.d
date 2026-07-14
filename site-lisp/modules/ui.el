@@ -30,29 +30,98 @@
   :config
   (emojify-set-emoji-styles '(unicode)))
 
-(defun modules-ui-setup-fonts ()
-  "Configure default fonts for the current frame."
-  (when (display-graphic-p)
-    (cl-loop for font in '("Iosevka Term")
-             thereis (set-face-attribute 'default nil :family font :height 160))
-    (cl-loop for font in '("Segoe UI Symbol" "Symbola" "Symbol")
-             thereis (if (< emacs-major-version 27)
-                         (set-fontset-font "fontset-default" 'unicode font nil 'prepend)
-                       (set-fontset-font t 'symbol (font-spec :family font) nil 'prepend)))
-    (cl-loop for font in '("Noto Color Emoji" "Apple Color Emoji" "Segoe UI Emoji")
-             thereis (cond
-                      ((< emacs-major-version 27)
-                       (set-fontset-font "fontset-default" 'unicode font nil 'prepend))
-                      ((< emacs-major-version 28)
-                       (set-fontset-font t 'symbol (font-spec :family font) nil 'prepend))
-                      (t
-                       (set-fontset-font t 'emoji (font-spec :family font) nil 'prepend))))
-    (cl-loop for font in '("LXGW WenKai Mono TC")
-             thereis (set-fontset-font t 'han (font-spec :family font)))))
+(defconst modules-ui--monospace-font-candidates
+  '("Iosevka Fixed SS05"
+    "Iosevka Term"
+    "Iosevka"
+    "Cascadia Mono"
+    "Menlo"
+    "DejaVu Sans Mono"
+    "Monospace")
+  "Preferred monospaced font families, in priority order.")
 
-(modules-ui-setup-fonts)
-(add-hook 'window-setup-hook #'modules-ui-setup-fonts)
-(add-hook 'server-after-make-frame-hook #'modules-ui-setup-fonts)
+(defconst modules-ui--cjk-font-candidates
+  '("LXGW WenKai Mono TC"
+    "LXGW WenKai Mono TC Regular"
+    "LXGW WenKai Mono"
+    "Noto Sans SC"
+    "Noto Sans CJK SC"
+    "Microsoft YaHei UI"
+    "PingFang SC")
+  "Preferred Chinese and Bopomofo font families, in priority order.")
+
+(defconst modules-ui--japanese-font-candidates
+  '("Noto Sans JP"
+    "Noto Sans CJK JP"
+    "Yu Gothic UI"
+    "Hiragino Sans")
+  "Preferred Japanese font families, in priority order.")
+
+(defconst modules-ui--korean-font-candidates
+  '("Noto Sans KR"
+    "Noto Sans CJK KR"
+    "Malgun Gothic"
+    "Apple SD Gothic Neo")
+  "Preferred Korean font families, in priority order.")
+
+(defconst modules-ui--nerd-font-candidates
+  '("Symbols Nerd Font Mono" "Symbols Nerd Font")
+  "Preferred Nerd Font symbol families, in priority order.")
+
+(defvar modules-ui--default-fontset-configured-p nil
+  "Whether the default fontset has received the configured fallbacks.")
+
+(defun modules-ui--emoji-font-candidates ()
+  "Return platform-appropriate emoji font families in priority order."
+  (cond
+   (my/windows-p '("Segoe UI Emoji" "Noto Color Emoji" "Apple Color Emoji"))
+   (my/macos-p '("Apple Color Emoji" "Noto Color Emoji" "Segoe UI Emoji"))
+   (t '("Noto Color Emoji" "Segoe UI Emoji" "Apple Color Emoji"))))
+
+(defun modules-ui--find-font-family (candidates frame)
+  "Return the first installed family from CANDIDATES usable on FRAME."
+  (cl-loop for family in candidates
+           when (find-font (font-spec :family family) frame)
+           return family))
+
+(defun modules-ui--set-fontset-font (characters family frame)
+  "Use FAMILY for CHARACTERS in FRAME and, once, the default fontset."
+  (when family
+    (let ((font (font-spec :family family)))
+      (unless modules-ui--default-fontset-configured-p
+        (set-fontset-font t characters font nil 'prepend))
+      (set-fontset-font nil characters font frame 'prepend))))
+
+(defun modules-ui-apply-fonts (&optional frame)
+  "Configure preferred fonts and fallbacks for graphical FRAME."
+  (let ((frame (or frame (selected-frame))))
+    (when (display-graphic-p frame)
+      (let ((monospace (modules-ui--find-font-family
+                        modules-ui--monospace-font-candidates frame))
+            (cjk (modules-ui--find-font-family
+                  modules-ui--cjk-font-candidates frame))
+            (japanese (modules-ui--find-font-family
+                       modules-ui--japanese-font-candidates frame))
+            (korean (modules-ui--find-font-family
+                     modules-ui--korean-font-candidates frame))
+            (emoji (modules-ui--find-font-family
+                    (modules-ui--emoji-font-candidates) frame))
+            (nerd (modules-ui--find-font-family
+                   modules-ui--nerd-font-candidates frame)))
+        (when monospace
+          (set-face-attribute 'default frame :family monospace :height 160))
+        (dolist (assignment `((han . ,cjk)
+                              (bopomofo . ,cjk)
+                              (kana . ,japanese)
+                              (hangul . ,korean)
+                              (emoji . ,emoji)
+                              ((#xE000 . #xF8FF) . ,nerd)))
+          (modules-ui--set-fontset-font
+           (car assignment) (cdr assignment) frame))
+        (setq modules-ui--default-fontset-configured-p t)))))
+
+(modules-ui-apply-fonts)
+(add-hook 'after-make-frame-functions #'modules-ui-apply-fonts)
 
 (use-package hl-todo
   :hook ((prog-mode yaml-mode) . hl-todo-mode)
@@ -120,9 +189,6 @@
           "^\\.\\(?:sync\\|export\\|attach\\)$"
           "~$"
           "^#.*#$")))
-
-(use-package unicode-fonts
-  :defer t)
 
 (use-package diff-hl
   :hook (after-init . global-diff-hl-mode)
