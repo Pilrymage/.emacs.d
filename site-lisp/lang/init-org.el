@@ -26,7 +26,33 @@
     (add-to-list 'org-src-lang-modes '("rust" . rust-ts))
     (add-to-list 'org-src-lang-modes '("bash" . bash-ts)))
 
-
+  (my/mode-leader-def
+    :keymaps 'org-mode-map
+    "a" '(org-toggle-narrow-to-subtree :which-key "narrow subtree")
+    "A" '(org-agenda :which-key "agenda")
+    "b" '(org-tree-to-indirect-buffer :which-key "indirect buffer")
+    "c" '(org-cliplink :which-key "clip link")
+    "C" '(org-capture :which-key "capture")
+    "f" '(org-footnote-new :which-key "new footnote")
+    "g" '(org-goto :which-key "goto")
+    "I" '(org-clock-in :which-key "clock in")
+    "O" '(my/org-clock-out-and-done :which-key "clock out and done")
+    "p" '(org-download-clipboard :which-key "download clipboard")
+    "P" '(org-super-links-insert-link :which-key "insert super link")
+    "q" '(org-set-tags-command :which-key "set tags")
+    "S" '(org-sparse-tree :which-key "sparse tree")
+    "t" '(org-todo :which-key "todo")
+    "T" '(org-timestamp :which-key "timestamp")
+    "Y" '(org-super-links-store-link :which-key "store super link")
+    "," '(org-timer-pause-or-continue :which-key "pause or resume timer")
+    "." '(org-timer :which-key "record timer")
+    "0" '(org-timer-start :which-key "start timer")
+    "_" '(my/org-timer-record-and-stop-and-done :which-key "record, stop, and done")
+    "'" '(org-edit-special :which-key "edit special")
+    "RET" '(org-ctrl-c-ret :which-key "ctrl-c return")
+    "TAB" '(org-ctrl-c-tab :which-key "ctrl-c tab")
+    "*" '(org-ctrl-c-star :which-key "ctrl-c star")
+    "-" '(org-ctrl-c-minus :which-key "ctrl-c minus"))
   ;; 在 org mode 中添加无序列表和有序列表的颜色
   (font-lock-add-keywords
    'org-mode
@@ -109,6 +135,12 @@
 (use-package gnuplot-mode
   :defer t)
 
+(use-package verb
+  :defer t
+  :mode ("\\.org\\'" . org-mode)
+  :general (my/mode-leader-def
+            :keymaps 'org-mode-map
+            "r" '(:keymap verb-command-map :which-key "verb")))
 
 (use-package org-journal
   :defer t

@@ -14,10 +14,6 @@
     (evil-set-initial-state 'elfeed-show-mode 'emacs)))
 
 
-(use-package verb
-  :defer t
-  :mode ("\\.org\\'" . org-mode)
-  :general (my/org-leader-def "r" '(:keymap verb-command-map :which-key "verb")))
 
 (use-package telega
   :defer t
