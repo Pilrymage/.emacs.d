@@ -30,7 +30,7 @@
 *** [[https://qiita.com/popular-items/feed][Qiita - 人気の記事]] 
 *** [[https://zenn.dev/feed][Zennのトレンド]] 
 ** 新闻资讯     
-*** [[https://www.ithome.com/rss/][IT之家]]
+*** [[https://www.ithome.com/rss/][IT之家]]                                                         :ignore:
 *** [[https://hellogithub.com/rss][HelloGitHub 月刊]]
 *** [[http://www.ptyqm.com/feed][PT邀请码网]]
 ** 科技媒体                                         :translate_title:
