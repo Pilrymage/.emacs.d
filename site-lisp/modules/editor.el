@@ -1,16 +1,7 @@
 ;;; modules/editor.el --- Editing enhancements -*- lexical-binding: t; -*-
 
-(defun my/org-timer-record-and-stop-and-done ()
-  (interactive)
-  (org-timer)
-  (org-timer-stop)
-  (org-todo 'done))
-
-(defun my/org-clock-out-and-done ()
-  (interactive)
-  (org-clock-out)
-  (org-todo 'done))
 (use-package general
+  :demand t
   :config
   (general-create-definer my/evil-normal-def
     :states '(normal visual))
@@ -23,41 +14,178 @@
     :prefix "SPC")
 
   (general-create-definer my/mode-leader-def
-    :states '(normal)
-    :prefix "SPC n"))
-(use-package rime
-  :defer t
-  :custom
-  (default-input-method "rime")
-  :bind (:map rime-mode-map
-              ("C-`" . rime-send-keybinding)
-              ("`" . rime-inline-ascii))
+    :states '(normal visual)
+    :prefix "SPC n")
+
+  (general-define-key
+   "<f8>" #'execute-extended-command
+   "`" #'rime-inline-ascii)
+
+  (with-eval-after-load 'evil
+    (my/evil-normal-def
+      ;; Colemak movement
+      "u" #'evil-previous-line
+      "e" #'evil-next-line
+      "n" #'evil-backward-char
+      "i" #'evil-forward-char
+      "U" #'my/previous-five-lines
+      "E" #'my/next-five-lines
+      "N" #'evil-beginning-of-line
+      "I" #'evil-end-of-line
+      ;; Editing and commands
+      ",." #'evil-jump-item
+      "m" #'evil-forward-word-end
+      "j" #'evil-undo
+      "l" #'evil-insert
+      "L" #'evil-insert-line
+      "`" #'evil-invert-char
+      "Q" #'kill-current-buffer
+      "M" #'execute-extended-command
+      ";" #'evil-ex
+      "g +" '(evil-numbers/inc-at-pt :which-key "increment number")
+      "g -" '(evil-numbers/dec-at-pt :which-key "decrement number")
+      ;; Word and search motions
+      "h" #'evil-backward-word-begin
+      "H" #'evil-backward-WORD-begin
+      "k" #'evil-ex-search-next
+      "K" #'evil-ex-search-previous
+      "w" #'evilem-motion-forward-word-begin
+      "W" #'evilem-motion-forward-WORD-begin
+      "b" #'evilem-motion-backward-word-begin
+      "B" #'evilem-motion-backward-WORD-begin
+      ;; Windows
+      "C-w u" #'evil-window-up
+      "C-w e" #'evil-window-down
+      "C-w n" #'evil-window-left
+      "C-w i" #'evil-window-right)
+
+    (my/evil-insert-def
+      ;; Line editing
+      "C-a" #'beginning-of-line
+      "C-e" #'end-of-line
+      "C-k" #'kill-line
+      ;; Character and word editing
+      "C-f" #'forward-char
+      "C-b" #'backward-char
+      "M-f" #'forward-word
+      "M-b" #'backward-word
+      "C-p" #'previous-line
+      "C-n" #'next-line
+      "C-d" #'delete-char
+      "M-d" #'kill-word
+      "C-u" nil
+      "C-y" #'yank)
+
+    ;; Evil binds bare SPC in motion state by default; clear it before using
+    ;; SPC as a leader prefix.
+    (general-define-key
+     :states '(normal visual motion)
+     "SPC" nil)
+
+    (my/leader-def
+      "b" '(:ignore t :which-key "buffer")
+      "b b" '(consult-buffer :which-key "switch buffer")
+      "b p" '(previous-buffer :which-key "previous")
+      "f" '(:ignore t :which-key "file")
+      "f f" '(find-file :which-key "find file")
+      "f r" '(consult-recent-file :which-key "recent files")
+      "f d" '(consult-fd :which-key "find project file")
+      "f D" '(consult-dir :which-key "change directory")
+      "f e" '(my/open-config-directory :which-key "Emacs config")
+      "s" '(:ignore t :which-key "search")
+      "s l" '(consult-line :which-key "search buffer")
+      "s r" '(consult-ripgrep :which-key "search project")
+      "g" '(magit :which-key "Magit")
+      "h" '(:ignore t :which-key "help")
+      "h f" '(helpful-callable :which-key "callable")
+      "h v" '(helpful-variable :which-key "variable")
+      "h k" '(helpful-key :which-key "key")
+      "h x" '(helpful-command :which-key "command")
+      "h d" '(helpful-at-point :which-key "at point")
+      "h F" '(helpful-function :which-key "function")
+      "n" '(:ignore t :which-key "major mode")
+      "o" '(:ignore t :which-key "open")
+      "o c" '(org-capture :which-key "capture")
+      "o d" '(dirvish :which-key "Dirvish")
+      "o e" '(elfeed :which-key "Elfeed")
+      "o j" '(org-journal-new-entry :which-key "new journal entry")
+      "o J" '(org-journal-open-current-journal-file :which-key "today's journal")
+      "m" '(:ignore t :which-key "bookmarks")
+      "m s" '(bookmark-set :which-key "set")
+      "m l" '(list-bookmarks :which-key "list")
+      "m j" '(bookmark-jump :which-key "jump")
+      "q" '(:ignore t :which-key "session")
+      "q s" '(scratch-buffer :which-key "scratch buffer")
+      "q r" '(restart-emacs :which-key "restart Emacs")
+      "t" '(:ignore t :which-key "toggle")
+      "t f" '(toggle-frame-fullscreen :which-key "fullscreen"))
+
+    (if my/windows-p
+        (my/leader-def "o t" '(eshell :which-key "terminal"))
+      (my/leader-def "o t" '(vterm :which-key "terminal")))
+
+    (my/mode-leader-def
+      :keymaps 'org-mode-map
+      "a" '(org-toggle-narrow-to-subtree :which-key "narrow subtree")
+      "A" '(org-agenda :which-key "agenda")
+      "b" '(org-tree-to-indirect-buffer :which-key "indirect buffer")
+      "c" '(org-cliplink :which-key "clip link")
+      "C" '(org-capture :which-key "capture")
+      "f" '(org-footnote-new :which-key "new footnote")
+      "g" '(org-goto :which-key "goto")
+      "I" '(org-clock-in :which-key "clock in")
+      "O" '(my/org-clock-out-and-done :which-key "clock out and done")
+      "p" '(org-download-clipboard :which-key "download clipboard")
+      "P" '(org-super-links-insert-link :which-key "insert super link")
+      "q" '(org-set-tags-command :which-key "set tags")
+      "r" '(:keymap verb-command-map :package verb :which-key "verb")
+      "S" '(org-sparse-tree :which-key "sparse tree")
+      "t" '(org-todo :which-key "todo")
+      "T" '(org-timestamp :which-key "timestamp")
+      "Y" '(org-super-links-store-link :which-key "store super link")
+      "," '(org-timer-pause-or-continue :which-key "pause or resume timer")
+      "." '(org-timer :which-key "record timer")
+      "0" '(org-timer-start :which-key "start timer")
+      "_" '(my/org-timer-record-and-stop-and-done
+            :which-key "record, stop, and done")
+      "'" '(org-edit-special :which-key "edit special")
+      "RET" '(org-ctrl-c-ret :which-key "ctrl-c return")
+      "TAB" '(org-ctrl-c-tab :which-key "ctrl-c tab")
+      "*" '(org-ctrl-c-star :which-key "ctrl-c star")
+      "-" '(org-ctrl-c-minus :which-key "ctrl-c minus"))
+
+    (my/mode-leader-def
+      :keymaps 'agda2-mode-map
+      "l" '(agda2-load :which-key "load")
+      "b" '(agda2-previous-goal :which-key "previous goal")
+      "f" '(agda2-next-goal :which-key "next goal")
+      "c" '(agda2-make-case :which-key "case split")
+      "g" '(agda2-give :which-key "fill goal")
+      "r" '(agda2-refine :which-key "refine")
+      "a" '(agda2-mimer-maybe-all :which-key "solve all goals")
+      "," '(agda2-goal-and-context :which-key "goal and context")
+      "." '(agda2-goal-and-context-and-inferred
+            :which-key "goal, context, and inferred type")
+      "h" '(agda2-helper-function-type :which-key "helper function type"))))
+
+(use-package which-key
+  :demand t
   :config
-  (cond (my/macos-p
-         (rime-librime-root (expand-file-name "librime/dist" user-emacs-directory)))
-        (my/windows-p
-         (setq rime-librime-root "~/scoop/apps/librime/current")
-         (setq rime-emacs-module-header-root "~/scoop/apps/emacs/current/include/"))) 
-  (global-set-key (kbd "`") #'rime-inline-ascii)
-  (setq rime-inline-ascii-holder ?x
-        rime-user-data-dir (expand-file-name "rime" user-emacs-directory)))
+  (setq which-key-side-window-max-width 0.5
+        which-key-popup-type 'side-window)
+  (which-key-mode 1))
 
-(defvar +snippets-dir (expand-file-name "snippets" user-emacs-directory)
-  "Directory that stores personal snippets.")
-
-(defvar evil-want-Y-yank-to-eol t)                  ; Y 是 y$ 而非 yy
-(defvar evil-want-abbrev-expand-on-insert-exit nil) ; 退出插入模式不展开缩写
-(defvar evil-respect-visual-line-mode t)            ; j k 视觉行移动而非逻辑行
-(defvar evil-want-C-g-bindings t)                   ; Evil 处理 C-g 行为
-(defvar evil-want-C-i-jump nil)                     ; dont car
-(defvar evil-want-C-u-scroll nil)                   ; dont car
-(defvar evil-want-C-u-delete nil)                     ; dont car
-(defvar evil-want-C-w-delete nil)                     ; dont car
 (use-package evil
-  :defer t
   :hook (after-init . evil-mode)
-  :ensure t
-  :preface
+  :init
+  (setq evil-want-Y-yank-to-eol t
+        evil-want-abbrev-expand-on-insert-exit nil
+        evil-respect-visual-line-mode t
+        evil-want-C-g-bindings t
+        evil-want-C-i-jump nil
+        evil-want-C-u-scroll nil
+        evil-want-C-u-delete nil
+        evil-want-C-w-delete nil)
   (setq evil-ex-search-vim-style-regexp t ; vim 正则而非 emacs
         evil-ex-visual-char-range t  ; ex 命令按列范围
         evil-mode-line-format 'nil   ; doom modeline 配合显示 evil 状态
@@ -65,7 +193,6 @@
         evil-symbol-word-search t    ; 横线分隔单词看作一个词： this-is-a-symbol 是一词
         ;; if the current state is obvious from the cursor's color/shape, then
         ;; we won't need superfluous indicators to do it instead.
-        evil-default-cursor '+evil-default-cursor-fn
         evil-normal-state-cursor 'box
         evil-emacs-state-cursor  'box
         evil-insert-state-cursor 'bar
@@ -80,28 +207,29 @@
   (evil-select-search-module 'evil-search-module 'evil-search) ; evil 搜索而非 isearch
   ;; visual mode 下光标移动不许每次更新系统剪贴板，必要优化
   (setq evil-visual-update-x-selection-p nil)
-  ;; C-h t 应当是 Emacs state，使用动态注入逻辑
-  (advice-add #'help-with-tutorial :after (lambda (&rest _) (evil-emacs-state +1))))
+  (evil-set-initial-state 'dired-mode 'emacs)
+  (evil-set-initial-state 'log-view-mode 'emacs)
+  (evil-set-initial-state 'vc-git-log-view-mode 'emacs)
+  (evil-set-initial-state 'vc-hg-log-view-mode 'emacs)
+  (evil-set-initial-state 'vc-bzr-log-view-mode 'emacs)
+  (evil-set-initial-state 'vc-svn-log-view-mode 'emacs)
+  (evil-set-initial-state 'vc-dir-mode 'emacs)
+  (evil-set-initial-state 'vc-annotate-mode 'normal))
 
-;; Ensure `evil-shift-width' always matches `tab-width'; evil does not police
-;; this itself, so we must.
 (use-package evil-surround
-  :defer t
-  :hook (after-init . evil-surround-mode)
   :config
   (global-evil-surround-mode 1)
   (add-to-list 'evil-surround-pairs-alist '(?$ . ("\\(" . "\\)"))))
 
 ;; 注释：vgc, gcc
 (use-package evil-commentary
-  :ensure t
-  :hook (after-init . evil-commentary-mode)
   :config
-  (evil-commentary-mode))
+  (evil-commentary-mode 1))
+
 (use-package evil-numbers :defer t)
-                                        ; avy 代替
+
+;; avy 代替
 (use-package evil-easymotion
-  :ensure t
   :config
   (setq evilem-keys
         '(
@@ -139,57 +267,63 @@
 
 ;; format +onsave
 (use-package apheleia
-  :defer t
   :hook (after-init . apheleia-global-mode))
+
 ;; snippets          ; my elves. They type so I don't have to
-(defvar yas-snippet-dirs "~/.emacs.d/yasnippet")
+(defconst modules-editor--snippets-directory
+  (expand-file-name "yasnippet" user-emacs-directory)
+  "Directory that stores personal snippets.")
+
+(use-package yasnippet
+  :config
+  (setq yas-snippet-dirs (list modules-editor--snippets-directory))
+  (yas-global-mode 1))
 
 (use-package auto-yasnippet
   :defer t
-  :config
-  (setq aya-persist-snippets-dir +snippets-dir))
+  :init
+  (setq aya-persist-snippets-dir modules-editor--snippets-directory))
 
 ;; ====== emacs ======
-;;dired             ; making dired pretty [functionul]
-(setq dired-dwim-target t  ; suggest a target for moving/copying intelligently
-      ;; don't prompt to revert, just do it
-      auto-revert-remote-files t
-      ;; Always copy/delete recursively
-      dired-recursive-copies  'always
-      dired-recursive-deletes 'top
-      ;; Ask whether destination dirs should get created when copying/removing files.
-      dired-create-destination-dirs 'ask
-      ;; Where to store image caches
-      image-dired-dir (concat cache-dir "image-dired/")
-      image-dired-db-file (concat image-dired-dir "db.el")
-      image-dired-gallery-dir (concat image-dired-dir "gallery/")
-      image-dired-temp-image-file (concat image-dired-dir "temp-image")
-      image-dired-temp-rotate-image-file (concat image-dired-dir "temp-rotate-image")
-      ;; Screens are larger nowadays, we can afford slightly larger thumbnails
-      image-dired-thumb-size 150)
-(evil-set-initial-state 'dired-mode 'emacs)
+;; dired             ; making dired pretty [functional]
+(use-package dired
+  :straight nil
+  :init
+  (setq dired-dwim-target t
+        auto-revert-remote-files t
+        dired-recursive-copies 'always
+        dired-recursive-deletes 'top
+        dired-create-destination-dirs 'ask
+        dired-vc-rename-file t
+        image-dired-dir (concat cache-dir "image-dired/")
+        image-dired-db-file (concat image-dired-dir "db.el")
+        image-dired-gallery-dir (concat image-dired-dir "gallery/")
+        image-dired-temp-image-file (concat image-dired-dir "temp-image")
+        image-dired-temp-rotate-image-file (concat image-dired-dir "temp-rotate-image")
+        image-dired-thumb-size 150))
+
 (use-package dirvish
-  :defer t
   :init
   (setq dirvish-cache-dir (concat cache-dir "dirvish"))
   :config
   (dirvish-override-dired-mode)
-  (setq dirvish-reuse-session nil)
-  (setq dirvish-attributes '(file-size)
+  (setq dirvish-reuse-session nil
+        dirvish-attributes
+        '(vc-state subtree-state nerd-icons collapse
+                   git-msg file-modes file-time file-size)
         dirvish-mode-line-format
-        '(:left (sort file-time symlink) :right (omit yank index)))
-  (setq dirvish-attributes nil
-        dirvish-use-header-line nil
-        dirvish-use-mode-line nil)
-  (setq dirvish-subtree-always-show-state t))
+        '(:left (sort file-time " " file-size symlink)
+          :right (omit yank index))
+        dirvish-use-header-line 'global
+        dirvish-use-mode-line 'global
+        dirvish-subtree-always-show-state t))
+
 (use-package diredfl
-  :defer t
-  :hook (dired-mode . diredfl-mode)
-  :hook (dirvish-directory-view-mode . diredfl-mode))
+  :hook ((dired-mode . diredfl-mode)
+         (dirvish-directory-view-mode . diredfl-mode)))
+
 (use-package dired-x
   :straight nil
-  :defer t
-  :ensure nil
   :hook (dired-mode . dired-omit-mode)
   :config
   (setq dired-omit-verbose nil
@@ -218,85 +352,42 @@
             ("\\.\\(?:mp3\\|flac\\)\\'" ,cmd)
             ("\\.html?\\'" ,cmd)
             ("\\.md\\'" ,cmd)))))
-(use-package dired-aux
-  :straight nil
-  :ensure nil
-  :defer t
-  :init
-  (require 'dired-aux)
-  :config
-  (setq dired-create-destination-dirs 'ask
-        dired-vc-rename-file t))
-(use-package dired-preview
-  :defer t
-  :hook (dired-mode . dired-preview-mode))
 ;;undo              ; persistent, smarter undo for your inevitable mistakes
 (use-package undo-fu
   :defer t
-  :hook (window-setup-hook . undo-fu-mode)
-  :config
+  :init
   (setq undo-limit 400000           ; 400kb (default is 160kb)
         undo-strong-limit 3000000   ; 3mb   (default is 240kb)
-        undo-outer-limit 48000000)  ; 48mb  (default is 24mb)
-  (define-minor-mode undo-fu-mode
-    "Enables `undo-fu' for the current session."
-    :keymap (let ((map (make-sparse-keymap)))
-              (define-key map [remap undo] #'undo-fu-only-undo)
-              (define-key map [remap redo] #'undo-fu-only-redo)
-              (define-key map (kbd "C-_")     #'undo-fu-only-undo)
-              (define-key map (kbd "M-_")     #'undo-fu-only-redo)
-              (define-key map (kbd "C-M-_")   #'undo-fu-only-redo-all)
-              (define-key map (kbd "C-x r u") #'undo-fu-session-save)
-              (define-key map (kbd "C-x r U") #'undo-fu-session-recover)
-              map)
-    :init-value nil
-    :global t))
+        undo-outer-limit 48000000)) ; 48mb (default is 24mb)
+
 (use-package undo-fu-session
   :defer t
-  :hook (undo-fu-mode . global-undo-fu-session-mode)
-  :custom (undo-fu-session-directory (concat cache-dir "undo-fu-session"))
-  :config
-  (setq undo-fu-session-incompatible-files '("\\.gpg$" "/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
-
+  :commands undo-fu-session-global-mode
+  :init
+  (setq undo-fu-session-directory (concat cache-dir "undo-fu-session")
+        undo-fu-session-incompatible-files
+        '("\\.gpg$" "/COMMIT_EDITMSG\\'" "/git-rebase-todo\\'"))
   (when (executable-find "zstd")
-    ;; There are other algorithms available, but zstd is the fastest, and speed
-    ;; is our priority within Emacs
     (setq undo-fu-session-compression 'zst)))
+
 (use-package vundo
   :defer t
   :config
   (setq vundo-glyph-alist vundo-unicode-symbols
         vundo-compact-display t))
-;;vc                ; version-control and Emacs, sitting in a tree
-(setq-default vc-handled-backends '(SVN Git Hg))
-;; 设置特定模式的初始状态为 emacs
-(with-eval-after-load 'log-view
-  (evil-set-initial-state 'log-view-mode 'emacs)
-  (evil-set-initial-state 'vc-git-log-view-mode 'emacs)
-  (evil-set-initial-state 'vc-hg-log-view-mode 'emacs)
-  (evil-set-initial-state 'vc-bzr-log-view-mode 'emacs)
-  (evil-set-initial-state 'vc-svn-log-view-mode 'emacs))
-(use-package vc :ensure nil
-  :defer t)
+;; vc                ; version-control and Emacs, sitting in a tree
+(use-package vc
+  :straight nil
+  :init
+  (setq vc-handled-backends '(SVN Git Hg)))
+
 (use-package vc-annotate
   :straight nil
-  :defer t
-  :ensure nil
-  :config
-  (evil-set-initial-state 'vc-annotate-mode 'normal))
-(with-eval-after-load 'vc-dir
-  (evil-set-initial-state 'vc-dir-mode 'emacs))
+  :defer t)
+
 (use-package smerge-mode
-  :ensure nil
-  :defer t
-  :config
-  (add-hook 'find-file-hook
-            (defun +vc-init-smerge-mode-h ()
-              (unless (bound-and-true-p smerge-mode)
-                (save-excursion
-                  (goto-char (point-min))
-                  (when (re-search-forward "^<<<<<<< " nil t)
-                    (smerge-mode 1)))))))
+  :straight nil
+  :hook (find-file . modules-editor--maybe-enable-smerge-mode))
 
 (use-package browse-at-remote
   :defer t)
@@ -308,149 +399,37 @@
   (with-eval-after-load 'evil
     (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps)))
 (use-package git-modes
-  :defer t
-  )
+  :defer t)
 
+;; Evil's shift operators use two spaces by default in this configuration.
 (setq evil-shift-width 2)
 
-(defun my/jump-to-user-emacs-directory ()
-  (interactive)
-  (dired (concat user-emacs-directory "site-lisp")))
-
-(defun repeat-command (proc times)
-  "Call PROC a total of TIMES."
-  (dotimes (_ times)
-    (funcall proc)))
-
-(defun my/previous-five-line ()
-  "Move cursor up five lines."
-  (interactive)
-  (repeat-command #'evil-previous-line 5))
-
-(defun my/next-five-line ()
-  "Move cursor down five lines."
-  (interactive)
-  (repeat-command #'evil-next-line 5))
-
-(with-eval-after-load 'evil
-  (my/evil-normal-def
-    ;; Colemak movement
-    "u" #'evil-previous-line
-    "e" #'evil-next-line
-    "n" #'evil-backward-char
-    "i" #'evil-forward-char
-    "U" #'my/previous-five-line
-    "E" #'my/next-five-line
-    "N" #'evil-beginning-of-line
-    "I" #'evil-end-of-line
-    ;; Editing and commands
-    ",." #'evil-jump-item
-    "m" #'evil-forward-word-end
-    "j" #'evil-undo
-    "l" #'evil-insert
-    "L" #'evil-insert-line
-    "`" #'evil-invert-char
-    "Q" #'kill-current-buffer
-    "M" #'execute-extended-command
-    ";" #'evil-ex
-    ;; Word and search motions
-    "h" #'evil-backward-word-begin
-    "H" #'evil-backward-WORD-begin
-    "k" #'evil-ex-search-next
-    "K" #'evil-ex-search-previous
-    "w" #'evilem-motion-forward-word-begin
-    "W" #'evilem-motion-forward-WORD-begin
-    "b" #'evilem-motion-backward-word-begin
-    "B" #'evilem-motion-backward-WORD-begin
-    ;; Numbers and windows
-    "C-c +" #'evil-numbers/inc-at-pt
-    "C-c -" #'evil-numbers/dec-at-pt
-    "C-w u" #'evil-window-up
-    "C-w e" #'evil-window-down
-    "C-w n" #'evil-window-left
-    "C-w i" #'evil-window-right)
-
-  (my/evil-insert-def
-    ;; Line editing
-    "C-a" #'beginning-of-line
-    "C-e" #'end-of-line
-    "C-k" #'kill-line
-    ;; Character and word editing
-    "C-f" #'forward-char
-    "C-b" #'backward-char
-    "M-f" #'forward-word
-    "M-b" #'backward-word
-    "C-p" #'previous-line
-    "C-n" #'next-line
-    "C-d" #'delete-char
-    "M-d" #'kill-word
-    "C-u" nil
-    "C-y" #'yank)
-
-  ;; Evil binds bare SPC in motion state by default; clear it before using
-  ;; SPC as a leader prefix.
-  (general-define-key
-   :states '(normal visual motion)
-   "SPC" nil)
-
-  (my/leader-def
-    "b" '(:ignore t :which-key "buffer")
-    "b b" '(consult-buffer :which-key "switch buffer")
-    "b p" '(previous-buffer :which-key "previous")
-    "f" '(:ignore t :which-key "file")
-    "f f" '(find-file :which-key "find file")
-    "f r" '(consult-recent-file :which-key "recent files")
-    "f d" '(consult-fd :which-key "find project file")
-    "f D" '(consult-dir :which-key "change directory")
-    "f e" '(my/jump-to-user-emacs-directory :which-key "Emacs config")
-    "s" '(:ignore t :which-key "search")
-    "s l" '(consult-line :which-key "search buffer")
-    "s r" '(consult-ripgrep :which-key "search project")
-    "g" '(magit :which-key "Magit")
-    "h" '(:ignore t :which-key "help")
-    "h f" '(helpful-callable :which-key "callable")
-    "h v" '(helpful-variable :which-key "variable")
-    "h k" '(helpful-key :which-key "key")
-    "h x" '(helpful-command :which-key "command")
-    "h d" '(helpful-at-point :which-key "at point")
-    "h F" '(helpful-function :which-key "function")
-    "n" '(:ignore t :which-key "notes")
-    "n c" '(org-capture :which-key "capture")
-    "n j" '(org-journal-new-entry :which-key "new journal entry")
-    "n J" '(org-journal-open-current-journal-file :which-key "today's journal")
-    "o" '(:ignore t :which-key "open")
-    "o d" '(dired :which-key "Dired")
-    "o e" '(elfeed :which-key "Elfeed")
-    "m" '(:ignore t :which-key "bookmarks")
-    "m s" '(bookmark-set :which-key "set")
-    "m l" '(list-bookmarks :which-key "list")
-    "m j" '(bookmark-jump :which-key "jump")
-    "q" '(:ignore t :which-key "session")
-    "q s" '(scratch-buffer :which-key "scratch buffer")
-    "q r" '(restart-emacs :which-key "restart Emacs")
-    "t" '(:ignore t :which-key "toggle")
-    "t f" '(toggle-frame-fullscreen :which-key "fullscreen"))
-
-  (if my/windows-p
-      (my/leader-def "o t" '(eshell :which-key "terminal"))
-    (my/leader-def "o t" '(vterm :which-key "terminal"))))
-
 (use-package pangu-spacing
-  :defer t
+  :preface
+  ;; pangu-spacing still consults an internal rx category table at runtime.
+  (require 'rx)
   :config
   (global-pangu-spacing-mode 1)
   (setq pangu-spacing-real-insert-separtor t))
 
-(use-package magit-delta
-  :hook (magit-mode . magit-delta-mode))
+(use-package rime
+  :defer t
+  :init
+  (setq default-input-method "rime"
+        rime-inline-ascii-holder ?x
+        rime-user-data-dir (expand-file-name "rime" user-emacs-directory))
+  (cond (my/macos-p
+         (setq rime-librime-root
+               (expand-file-name "librime/dist" user-emacs-directory)))
+        (my/windows-p
+         (setq rime-librime-root "~/scoop/apps/librime/current"
+               rime-emacs-module-header-root
+               "~/scoop/apps/emacs/current/include/")))
+  :bind (:map rime-mode-map
+              ("C-`" . rime-send-keybinding)
+              ("`" . rime-inline-ascii)))
 
-(use-package which-key
-  :config
-  (setq which-key-side-window-max-width 0.5
-        which-key-popup-type 'side-window)
-  (which-key-mode 1))
-
-(global-set-key (kbd "<f8>") #'execute-extended-command)
+;; Built-in editing behavior
 (electric-pair-mode 1)
 (with-eval-after-load 'electric-pair
   (setq electric-pair-pairs '((?\" . ?\")
@@ -466,6 +445,62 @@
 (setopt show-paren-context-when-offscreen t
         blink-matching-paren-highlight-offscreen t)
 (setq-default fill-column 80)
+
+;; Custom commands and modes
+(defun my/open-config-directory ()
+  "Open the site-lisp directory of this Emacs configuration."
+  (interactive)
+  (dirvish (expand-file-name "site-lisp" user-emacs-directory)))
+
+(defun my/previous-five-lines ()
+  "Move point up five lines."
+  (interactive)
+  (evil-previous-line 5))
+
+(defun my/next-five-lines ()
+  "Move point down five lines."
+  (interactive)
+  (evil-next-line 5))
+
+(defun modules-editor--use-emacs-state-after-tutorial (&rest _)
+  "Enter Evil's Emacs state after opening the tutorial."
+  (evil-emacs-state 1))
+
+(defun modules-editor--maybe-enable-smerge-mode ()
+  "Enable `smerge-mode' when the current buffer contains conflict markers."
+  (unless (bound-and-true-p smerge-mode)
+    (save-excursion
+      (goto-char (point-min))
+      (when (re-search-forward "^<<<<<<< " nil t)
+        (smerge-mode 1)))))
+
+(defun modules-editor--sync-undo-fu-session-mode ()
+  "Keep persistent undo sessions in sync with `modules-editor-undo-mode'."
+  (undo-fu-session-global-mode (if modules-editor-undo-mode 1 -1)))
+
+(define-minor-mode modules-editor-undo-mode
+  "Globally remap Emacs undo commands to undo-fu."
+  :keymap (let ((map (make-sparse-keymap)))
+            (define-key map [remap undo] #'undo-fu-only-undo)
+            (define-key map [remap redo] #'undo-fu-only-redo)
+            (define-key map (kbd "C-_") #'undo-fu-only-undo)
+            (define-key map (kbd "M-_") #'undo-fu-only-redo)
+            (define-key map (kbd "C-M-_") #'undo-fu-only-redo-all)
+            (define-key map (kbd "C-x r u") #'undo-fu-session-save)
+            (define-key map (kbd "C-x r U") #'undo-fu-session-recover)
+            map)
+  :init-value nil
+  :global t)
+
+(add-hook 'modules-editor-undo-mode-hook
+          #'modules-editor--sync-undo-fu-session-mode)
+(modules-editor-undo-mode 1)
+
+(unless (advice-member-p #'modules-editor--use-emacs-state-after-tutorial
+                         #'help-with-tutorial)
+  (advice-add #'help-with-tutorial :after
+              #'modules-editor--use-emacs-state-after-tutorial))
+
 (provide 'editor)
 
 ;;; modules/editor.el ends here

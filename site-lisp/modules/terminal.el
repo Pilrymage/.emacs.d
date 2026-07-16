@@ -62,6 +62,9 @@
   (add-hook 'magit-process-mode-hook #'goto-address-mode)
   (define-key transient-map [escape] #'transient-quit-one))
 
+(use-package magit-delta
+  :hook (magit-mode . magit-delta-mode))
+
 (use-package forge
   :defer t
   :preface

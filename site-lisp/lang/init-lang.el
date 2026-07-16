@@ -36,18 +36,6 @@
 ;;                       :files ("src/data/emacs-mode/*.el" (:exclude "agda-input.el"))
 ;;                       :nonrecursive t)
 ;; :config
-(my/mode-leader-def
- :keymaps 'agda2-mode-map
- "l" '(agda2-load :which-key "load")
- "b" '(agda2-previous-goal :which-key "previous goal")
- "f" '(agda2-next-goal :which-key "next goal")
- "c" '(agda2-make-case :which-key "case split")
- "g" '(agda2-give :which-key "fill goal")
- "r" '(agda2-refine :which-key "refine")
- "a" '(agda2-mimer-maybe-all :which-key "solve all goals")
- "," '(agda2-goal-and-context :which-key "goal and context")
- "." '(agda2-goal-and-context-and-inferred :which-key "goal, context, and inferred type")
- "h" '(agda2-helper-function-type :which-key "helper function type"))
 (add-to-list 'auto-mode-alist '("\\.agda\\'" . agda2-mode))
 (add-to-list 'auto-mode-alist '("\\.lagda.md\\'" . agda2-mode))
 (when-let ((agda-mode (executable-find "agda-mode")))
