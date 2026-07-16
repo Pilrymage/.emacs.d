@@ -1,11 +1,5 @@
 ;;; modules/editor.el --- Editing enhancements -*- lexical-binding: t; -*-
 
-(use-package recentf
-  :config
-  (recentf-mode 1)
-  (setq recentf-max-saved-items 200)
-  )
-
 (defun my/org-timer-record-and-stop-and-done ()
   (interactive)
   (org-timer)
@@ -401,11 +395,17 @@
 
   (my/leader-def
     "b" '(:ignore t :which-key "buffer")
+    "b b" '(consult-buffer :which-key "switch buffer")
     "b p" '(previous-buffer :which-key "previous")
     "f" '(:ignore t :which-key "file")
     "f f" '(find-file :which-key "find file")
-    "f r" '(recentf :which-key "recent files")
+    "f r" '(consult-recent-file :which-key "recent files")
+    "f d" '(consult-fd :which-key "find project file")
+    "f D" '(consult-dir :which-key "change directory")
     "f e" '(my/jump-to-user-emacs-directory :which-key "Emacs config")
+    "s" '(:ignore t :which-key "search")
+    "s l" '(consult-line :which-key "search buffer")
+    "s r" '(consult-ripgrep :which-key "search project")
     "g" '(magit :which-key "Magit")
     "h" '(:ignore t :which-key "help")
     "h f" '(helpful-callable :which-key "callable")
