@@ -31,8 +31,8 @@
   (emojify-set-emoji-styles '(unicode)))
 
 (defconst modules-ui--monospace-font-candidates
-  '("Iosevka Fixed SS05"
-    "Iosevka Term"
+  '(;"Iosevka Term"
+    "Sarasa Mono Slab TC"
     "Iosevka"
     "Cascadia Mono"
     "Menlo"
@@ -41,7 +41,8 @@
   "Preferred monospaced font families, in priority order.")
 
 (defconst modules-ui--cjk-font-candidates
-  '("LXGW WenKai Mono TC"
+  '(;"Sarasa Mono Slab TC"
+    "LXGW WenKai Mono TC"
     "LXGW WenKai Mono TC Regular"
     "LXGW WenKai Mono"
     "Noto Sans SC"
@@ -158,8 +159,8 @@
   :defer t)
 
 (defun modules-ui--neotree-no-confirm (&rest _)
-  "Disable confirmation prompts used by Neotree."
-  nil)
+       "Disable confirmation prompts used by Neotree."
+       nil)
 
 (use-package neotree
   :commands (neotree-show
@@ -211,19 +212,19 @@
   (setq writeroom-global-effects nil
         writeroom-maximize-window nil))
 
-(defvar +zen-mixed-pitch-modes
-  '(markdown-mode org-mode text-mode)
-  "Modes that should enable `mixed-pitch-mode' when in writeroom.")
-
+;; (defvar +zen-mixed-pitch-modes
+;;   '(markdown-mode org-mode text-mode)
+;;   "Modes that should enable `mixed-pitch-mode' when in writeroom.")
+;; 
 (use-package mixed-pitch
   :hook (writeroom-mode . +zen-enable-mixed-pitch-mode-h)
   :config
   (defun +zen-enable-mixed-pitch-mode-h ()
-    "Toggle `mixed-pitch-mode' when the current mode supports it."
-    (if (and writeroom-mode
-             (apply #'derived-mode-p +zen-mixed-pitch-modes))
-        (mixed-pitch-mode +1)
-      (mixed-pitch-mode -1))))
+         "Toggle `mixed-pitch-mode' when the current mode supports it."
+         (if (and writeroom-mode
+                  (apply #'derived-mode-p +zen-mixed-pitch-modes))
+             (mixed-pitch-mode +1)
+           (mixed-pitch-mode -1))))
 
 (use-package minions
   :hook (doom-modeline-mode . minions-mode))
@@ -245,7 +246,7 @@
       initial-scratch-message nil)
 
 (unless (daemonp)
-  (advice-add #'display-startup-echo-area-message :override #'ignore))
+        (advice-add #'display-startup-echo-area-message :override #'ignore))
 
 (use-package time
   :ensure nil
@@ -254,7 +255,7 @@
         display-time-format "%H:%M"))
 
 (when (fboundp 'pixel-scroll-precision-mode)
-  (pixel-scroll-precision-mode 1))
+      (pixel-scroll-precision-mode 1))
 
 (setq scroll-step 1
       scroll-margin 4
