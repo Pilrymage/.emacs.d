@@ -2,28 +2,35 @@
   (let ((cred (car (auth-source-search :host host :require '(:secret)))))
     (when cred
       (funcall (plist-get cred :secret)))))
+(defvar my/local-directory (expand-file-name "site-lisp/local" user-emacs-directory
+
+                                             ))
 
 (use-package chord-highlight
+  :straight (:type nil :local-repo "~/.emacs.d/site-lisp/local")
   :config
   (chord-highlight-mode 1))
-(use-package 'org-wc-diff
+(use-package org-wc-diff
+  :straight (:type nil :local-repo "~/.emacs.d/site-lisp/local")
   :init
   (setq org-wc-diff-tracked-files '("D:/github/notes.org/2026.org"))
   :config
   (global-org-wc-diff-mode 1))
 
 (use-package send-to-emacs
+  :straight (:type nil :local-repo "~/.emacs.d/site-lisp/local")
   :defer t)
 
 (use-package org-hydrus
   :defer t
+  :straight (:type nil :local-repo "~/.emacs.d/site-lisp/local")
   :config
   (setq org-hydrus-api-key (my/auth-get "hydrus")))
 
 
 
 (use-package elfeed-translate
-  :defer t
+  :ensure t
   :straight (elfeed-translate
              ;; :type nil
              ;; :host github
@@ -45,12 +52,12 @@
   ;;  elfeed-translate-api-key (my/auth-get "opencode") 
   ;;  elfeed-translate-api-url "https://opencode.ai/zen/go/v1/chat/completions" 
   ;;  elfeed-translate-model "deepseek-v4-flash"
-  ;; elfeed-translate-max-concurrent 4)
+  ;;  elfeed-translate-max-concurrent 4)
   (setq
    elfeed-translate-api-key (my/auth-get "opencode")
    elfeed-translate-api-url "https://opencode.ai/zen/v1/chat/completions" 
    elfeed-translate-model "deepseek-v4-flash-free"
-   elfeed-translate-max-concurrent 2)
+   elfeed-translate-max-concurrent 1)
   ;; (setq
   ;;  elfeed-translate-api-key (my/auth-get "opencode") 
   ;;  elfeed-translate-api-url "https://opencode.ai/zen/v1/chat/completions" 
@@ -63,6 +70,8 @@
   ;;  elfeed-translate-api-key (my/auth-get "deepseek")
   ;;  elfeed-translate-api-url "https://api.deepseek.com/chat/completions"
   ;;  elfeed-translate-model "deepseek-v4-flash"
-  ;; elfeed-translate-max-concurrent 16)
+  ;;  elfeed-translate-max-concurrent 16)
   )
 
+
+(provide 'local)
