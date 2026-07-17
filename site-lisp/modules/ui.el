@@ -180,13 +180,6 @@ ADD has the same meaning as in `set-fontset-font'."
   (global-diff-hl-mode 1)
   (add-hook 'magit-post-refresh-hook #'diff-hl-magit-post-refresh))
 
-(use-package blamer
-  :config
-  (setq blamer-idle-time 0.3
-        blamer-min-offset 20
-        blamer--overlay-popup-position 'smart)
-  (global-blamer-mode 1))
-
 (defun modules-ui--sync-mixed-pitch-mode ()
   "Keep `mixed-pitch-mode' in sync with `writeroom-mode'."
   (mixed-pitch-mode (if writeroom-mode 1 -1)))
