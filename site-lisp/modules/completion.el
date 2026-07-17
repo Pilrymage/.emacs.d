@@ -8,20 +8,18 @@
 
 (use-package recentf
   :straight nil
-  :ensure nil
   :init
-  (setq recentf-max-saved-items 200
-        recentf-exclude
+  (setq recentf-max-saved-items 200)
+  :config
+  (setq recentf-exclude
         (delete-dups
          (append recentf-exclude modules-completion--recentf-excluded-paths)))
-  :config
   (recentf-mode 1)
   (recentf-cleanup))
 
 (use-package savehist
   :straight nil
-  :ensure nil
-  :init
+  :config
   (savehist-mode 1))
 
 (use-package vertico

@@ -24,8 +24,6 @@
         (list '(:server "127.0.0.1" :port 7897 :enable t))))
 
 (use-package elfeed-org
-
-  :ensure t
   :init (elfeed-org))
 
 

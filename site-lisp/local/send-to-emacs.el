@@ -1,5 +1,5 @@
 (use-package web-server
-  :ensure t)
+  :defer t)
 
 (require 'subr-x)
 (require 'web-server)

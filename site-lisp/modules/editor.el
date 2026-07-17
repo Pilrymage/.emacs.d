@@ -110,6 +110,7 @@
       "o e" '(elfeed :which-key "Elfeed")
       "o j" '(org-journal-new-entry :which-key "new journal entry")
       "o J" '(org-journal-open-current-journal-file :which-key "today's journal")
+      "o s" '(dirvish-side :which-key "Dirvish sidebar")
       "m" '(:ignore t :which-key "bookmarks")
       "m s" '(bookmark-set :which-key "set")
       "m l" '(list-bookmarks :which-key "list")

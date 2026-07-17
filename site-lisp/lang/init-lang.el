@@ -31,7 +31,6 @@
 ;; 因为 git 上的 Agda2-mode 太新了，于是使用 PLFA 要求的 Agda 版本
 ;;(agda +local)              ; types of types of types of types...
 ;; (use-package agda2-mode
-;;   :ensure nil
 ;; :straight (agda2-mode :host github :repo "agda/agda"
 ;;                       :files ("src/data/emacs-mode/*.el" (:exclude "agda-input.el"))
 ;;                       :nonrecursive t)
@@ -70,7 +69,6 @@
 (use-package elisp-mode
   :straight nil
   :defer t
-  :ensure nil
   :mode ("\\.Cask\\'" . emacs-lisp-mode)
   :config
   (add-hook 'emacs-lisp-mode-hook #'outline-minor-mode)

@@ -39,11 +39,8 @@
     (when (file-directory-p default-directory)
       (normal-top-level-add-subdirs-to-load-path))))
 
-(advice-add #'package-initialize :after #'core--update-load-path)
-(advice-add #'package-initialize :after #'core--add-subdirs-to-load-path)
-
 (core--update-load-path)
-(package-initialize)
+(core--add-subdirs-to-load-path)
 
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)

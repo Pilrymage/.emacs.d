@@ -30,7 +30,6 @@
 
 
 (use-package elfeed-translate
-  :ensure t
   :straight (elfeed-translate
              ;; :type nil
              ;; :host github

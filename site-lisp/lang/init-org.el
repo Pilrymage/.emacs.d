@@ -72,11 +72,9 @@
 
 ;; Prettify UI
 (use-package org-modern
-  :ensure t
   :hook ((org-mode . org-modern-mode)
          (org-agenda-finalize . org-modern-agenda)))
 (use-package org-modern-indent
-  :ensure t
   :straight (org-modern-indent :type git :host github :repo "jdtsmith/org-modern-indent")
   :config
   (add-hook 'org-mode-hook #'org-modern-indent-mode 90))
@@ -247,14 +245,12 @@
 (use-package ox-hugo
   :after ox)
 (use-package cdlatex
-  :ensure t
   :hook (org-mode . turn-on-org-cdlatex)
   )
 
 (use-package auctex
   :defer t)
 (use-package org-appear
-  :ensure t
   :hook (org-mode . org-appear-mode)
   :config
   ;; 这一行必须为 t，否则 org-appear 不会工作
@@ -264,7 +260,6 @@
   (setq org-appear-autolinks t)     ; 光标进入链接描述时，展开显示完整的 URL
   (setq org-appear-autosubmarkers t)) ; 展开下标/上标标记，如 text_{sub}
 (use-package org-fragtog
-  :ensure t
   :hook (org-mode . org-fragtog-mode))
 
 (use-package org-super-links
