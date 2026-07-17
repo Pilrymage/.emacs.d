@@ -24,12 +24,27 @@
 
 (use-package vertico
   :init
-  (vertico-mode)
+  ;; `better-defaults' is loaded before this module and enables Ido when it
+  ;; cannot see Vertico yet.  Disable its remapping so standard commands such
+  ;; as `find-file' use the regular completion API and therefore Vertico.
+  (ido-mode -1)
+  (ido-everywhere -1)
+  (vertico-mode 1)
   :custom
   (vertico-resize nil)
   (vertico-count 17)
   (vertico-scroll-margin 3)
   (vertico-cycle t))
+
+(use-package vertico-directory
+  :straight nil
+  :after vertico
+  :bind (:map vertico-map
+              ("TAB" . minibuffer-complete)
+              ("RET" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word))
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
 (use-package orderless
   :custom
