@@ -43,14 +43,16 @@
   "Preferred Chinese and Bopomofo font families, in priority order.")
 
 (defconst modules-ui--japanese-font-candidates
-  '("Noto Sans JP"
+  '("LXGW WenKai Mono TC"
+    "Noto Sans JP"
     "Noto Sans CJK JP"
     "Yu Gothic UI"
     "Hiragino Sans")
   "Preferred Japanese font families, in priority order.")
 
 (defconst modules-ui--korean-font-candidates
-  '("Noto Sans KR"
+  '("LXGW WenKai Mono TC"
+    "Noto Sans KR"
     "Noto Sans CJK KR"
     "Malgun Gothic"
     "Apple SD Gothic Neo")
