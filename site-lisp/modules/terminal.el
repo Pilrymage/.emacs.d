@@ -1,89 +1,68 @@
 ;;; modules/terminal.el --- Terminal & tooling -*- lexical-binding: t; -*-
 
-(use-package hide-mode-line
-  :defer t)
+(defun modules-terminal--hide-mode-line ()
+  "Hide the mode line in the current buffer."
+  (setq-local mode-line-format nil))
 
-(use-package vterm
-  :defer t
-  :hook (vterm-mode . hide-mode-line-mode)
-  :config
-  (setq vterm-kill-buffer-on-exit t
-        vterm-max-scrollback 5000)
-  (evil-set-initial-state 'vterm-mode 'emacs))
+(defun modules-terminal--finish-quickrun ()
+  "Normalize the Quickrun output window after execution."
+  (when-let ((window (get-buffer-window quickrun--buffer-name)))
+    (with-selected-window window
+      (goto-char (point-min))
+      (let ((ignore-window-parameters t))
+        (shrink-window-if-larger-than-buffer)))))
 
-(setq eval-expression-print-length nil
-      eval-expression-print-level nil)
+(unless my/windows-p
+  (use-package vterm
+    :defer t
+    :hook (vterm-mode . modules-terminal--hide-mode-line)
+    :config
+    (setq vterm-kill-buffer-on-exit t
+          vterm-max-scrollback 5000)
+    (evil-set-initial-state 'vterm-mode 'emacs)))
 
 (use-package quickrun
   :defer t
   :config
   (setq quickrun-focus-p nil)
-  (add-hook 'quickrun-after-run-hook
-            (defun +eval-quickrun-shrink-window-h ()
-              "Shrink the quickrun output window once code evaluation is complete."
-              (when-let (win (get-buffer-window quickrun--buffer-name))
-                (with-selected-window win
-                  (let ((ignore-window-parameters t))
-                    (shrink-window-if-larger-than-buffer))))))
-  (add-hook 'quickrun-after-run-hook
-            (defun +eval-quickrun-scroll-to-bof-h ()
-              "Ensure window is scrolled to BOF on invocation."
-              (when-let (win (get-buffer-window quickrun--buffer-name))
-                (with-selected-window win
-                  (goto-char (point-min)))))))
+  (add-hook 'quickrun-after-run-hook #'modules-terminal--finish-quickrun))
 
 (use-package eros
   :defer t
   :hook (emacs-lisp-mode . eros-mode))
 
-(defvar +magit-open-windows-in-direction 'right
-  "What direction to open new windows from the status buffer.")
-
-(defvar +magit-fringe-size '(13 . 1)
-  "Size of the fringe in magit-mode buffers.")
-
-(use-package magit
+(use-package transient
   :defer t
-  :bind (:map magit-mode-map
-              ("q" . magit-mode-bury-buffer))
   :init
-  (setq magit-refresh-status-buffer t
-        magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1
-        magit-auto-revert-mode nil
+  (make-directory (concat data-dir "transient/") t)
+  (setq transient-default-level 5
         transient-levels-file (concat data-dir "transient/levels")
         transient-values-file (concat data-dir "transient/values")
         transient-history-file (concat data-dir "transient/history"))
   :config
-  (setq transient-default-level 5
-        magit-diff-refine-hunk 'all
+  (define-key transient-map [escape] #'transient-quit-one))
+
+(use-package magit
+  :defer t
+  :init
+  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+  :config
+  (setq magit-diff-refine-hunk 'all
         magit-save-repository-buffers nil
         magit-push-current-set-remote-if-missing t
         magit-revision-insert-related-refs nil)
-  (add-hook 'magit-process-mode-hook #'goto-address-mode)
-  (define-key transient-map [escape] #'transient-quit-one))
+  (magit-auto-revert-mode 1)
+  (add-hook 'magit-process-mode-hook #'goto-address-mode))
 
-(use-package magit-delta
-  :hook (magit-mode . magit-delta-mode))
+(when (executable-find "delta")
+  (use-package magit-delta
+    :hook (magit-mode . magit-delta-mode)))
 
 (use-package forge
   :defer t
-  :preface
-  (setq forge-database-file (concat data-dir "forge/forge-database.sqlite")
-        forge-add-default-bindings t))
-
-(use-package makefile-executor :defer t)
-
-(defvar +tree-sitter-hl-enabled-modes '(not web-mode typescript-tsx-mode))
-
-(use-package ssh-deploy
-  :defer t
   :init
-  (setq ssh-deploy-revision-folder (concat cache-dir "ssh-revisions/")
-        ssh-deploy-on-explicit-save 1
-        ssh-deploy-automatically-detect-remote-changes nil))
-
-(use-package consult-lsp
-  :defer t)
+  (make-directory (concat data-dir "forge/") t)
+  (setq forge-database-file (concat data-dir "forge/forge-database.sqlite")))
 
 (provide 'terminal)
 

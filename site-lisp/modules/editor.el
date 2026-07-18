@@ -49,10 +49,6 @@
       "H" #'evil-backward-WORD-begin
       "k" #'evil-ex-search-next
       "K" #'evil-ex-search-previous
-      "w" #'evilem-motion-forward-word-begin
-      "W" #'evilem-motion-forward-WORD-begin
-      "b" #'evilem-motion-backward-word-begin
-      "B" #'evilem-motion-backward-WORD-begin
       ;; Windows
       "C-w u" #'evil-window-up
       "C-w e" #'evil-window-down
@@ -229,39 +225,6 @@
 
 (use-package evil-numbers :defer t)
 
-;; avy 代替
-(use-package evil-easymotion
-  :config
-  (setq evilem-keys
-        '(
-          ?t ?n
-          ?s  ?e
-          ?r   ?i
-          ?a    ?o
-          ?d     ?h
-          ?g ?m ?p ?l ?f ?u ?w ?y ?v ?k ?c ?b ?j ?, ?x ?. ?q ?\; ?z
-          ))
-  (setq evilem-style 'at-full)
-  ;; Use evil-search backend, instead of isearch
-  (evilem-make-motion evilem-motion-search-next #'evil-ex-search-next
-                      :bind ((evil-ex-search-highlight-all nil)))
-  (evilem-make-motion evilem-motion-search-previous #'evil-ex-search-previous
-                      :bind ((evil-ex-search-highlight-all nil)))
-  (evilem-make-motion evilem-motion-search-word-forward #'evil-ex-search-word-forward
-                      :bind ((evil-ex-search-highlight-all nil)))
-  (evilem-make-motion evilem-motion-search-word-backward #'evil-ex-search-word-backward
-                      :bind ((evil-ex-search-highlight-all nil)))
-  ;; Rebind scope of w/W/e/E/ge/gE evil-easymotion motions to the visible
-  ;; buffer, rather than just the current line.
-  (put 'visible 'bounds-of-thing-at-point (lambda () (cons (window-start) (window-end))))
-  (evilem-make-motion evilem-motion-forward-word-begin #'evil-forward-word-begin :scope 'visible)
-  (evilem-make-motion evilem-motion-forward-WORD-begin #'evil-forward-WORD-begin :scope 'visible)
-  (evilem-make-motion evilem-motion-forward-word-end #'evil-forward-word-end :scope 'visible)
-  (evilem-make-motion evilem-motion-forward-WORD-end #'evil-forward-WORD-end :scope 'visible)
-  (evilem-make-motion evilem-motion-backward-word-begin #'evil-backward-word-begin :scope 'visible)
-  (evilem-make-motion evilem-motion-backward-WORD-begin #'evil-backward-WORD-begin :scope 'visible))
-
-
 ;; ex 状态实时预览
 (use-package evil-traces
   :config (evil-traces-mode))
@@ -314,7 +277,7 @@
                    git-msg file-modes file-time file-size)
         dirvish-mode-line-format
         '(:left (sort file-time " " file-size symlink)
-          :right (omit yank index))
+                :right (omit yank index))
         dirvish-use-header-line 'global
         dirvish-use-mode-line 'global
         dirvish-subtree-always-show-state t))
