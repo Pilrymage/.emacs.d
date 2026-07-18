@@ -2,32 +2,26 @@
 
 (use-package elfeed
   :defer t
+  :init
+  (setq elfeed-db-directory (concat data-dir "elfeed/")
+        elfeed-search-trailing-width 20
+        elfeed-search-title-max-width 120
+        elfeed-search-filter "@1-month-ago +unread -translate_title")
   :config
-  (setq elfeed-curl-extra-arguments '("-xhttp://localhost:7897"))
-  (setq elfeed-search-trailing-width 20)
-  (setq elfeed-search-title-max-width 160)
-  (setf url-queue-timeout 30
-        elfeed-set-max-connections 1)
-  (setq elfeed-search-filter "@1-month-ago +unread -translate_title")
+  (setq elfeed-curl-extra-arguments
+        (when my/proxy-url
+          (list "--proxy" my/proxy-url)))
+  (elfeed-set-timeout 30)
+  (elfeed-set-max-connections 4)
   (with-eval-after-load 'evil
     (evil-set-initial-state 'elfeed-search-mode 'emacs)
     (evil-set-initial-state 'elfeed-show-mode 'emacs)))
-
-
-
-(use-package telega
-  :defer t
-  :config
-  (with-eval-after-load 'evil
-    (evil-set-initial-state 'telega-mode 'emacs))
-  (setq telega-proxies
-        (list '(:server "127.0.0.1" :port 7897 :enable t))))
-
 (use-package elfeed-org
-  :init (elfeed-org))
+  :after elfeed
+  :config
+  (elfeed-org))
 
 
 (provide 'apps)
 
-
-
+;;; modules/apps.el ends here

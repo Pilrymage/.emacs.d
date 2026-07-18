@@ -9,6 +9,17 @@
 (defconst my/windows-p (eq system-type 'windows-nt)
   "Non-nil if running on Microsoft Windows.")
 
+(defvar my/proxy-url
+  (let ((proxy (getenv "EMACS_PROXY_URL")))
+    (cond
+     ((and proxy (member (downcase proxy) '("" "none" "off"))) nil)
+     (proxy proxy)
+     (my/windows-p "http://127.0.0.1:7897")))
+  "Optional HTTP proxy URL used by network-aware modules.
+
+The `EMACS_PROXY_URL' environment variable takes precedence.  Set it
+to \"none\", \"off\", or an empty string to disable the Windows default.")
+
 (defvar my/org-notes-repository
   (cond (my/windows-p "D:/github/notes.org")
         (t            "~/notes.org"))

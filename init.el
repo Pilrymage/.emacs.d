@@ -1,32 +1,36 @@
 ;;; init.el --- Personal Emacs configuration -*- lexical-binding: t; -*-
 
-(setq url-proxy-services
-      '(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
-        ("http" . "127.0.0.1:7897")
-        ("https" . "127.0.0.1:7897")))
-
-(setq package-archives '(("gnu"    . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-                         ("nongnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
-                         ("melpa"  . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
-
 (dolist (path '("site-lisp"
                 "site-lisp/core"
                 "site-lisp/modules"
                 "site-lisp/lang"
                 "site-lisp/local"))
-  (add-to-list 'load-path (expand-file-name path user-emacs-directory)))
+                (add-to-list 'load-path (expand-file-name path user-emacs-directory)))
+
+(require 'platform)
+
+(setq url-proxy-services
+      (when my/proxy-url
+        (let ((proxy (replace-regexp-in-string
+                      "\\`https?://" "" my/proxy-url)))
+          `(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
+            ("http" . ,proxy)
+            ("https" . ,proxy)))))
+
+(setq package-archives '(("gnu"    . "https://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+                         ("nongnu" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
+                         ("melpa"  . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 
                                         ; core
 (require 'bootstrap)
 (require 'options)
-(require 'platform)
 
                                         ; modules
 (require 'completion)
 (require 'ui)
 (require 'editor)
-(require 'terminal)
 (require 'os)
+(require 'terminal)
 (require 'apps)
 (require 'local)
 
@@ -41,4 +45,4 @@
 ;;; init.el ends here
 
 (load-file (let ((coding-system-for-read 'utf-8))
-             (shell-command-to-string "agda-mode.exe locate")))
+                (shell-command-to-string "agda-mode.exe locate")))
