@@ -182,96 +182,101 @@
 *** [[http://localhost:1200/zhihu/posts/people/nan-jue-tu][男爵兔]]
 
 
+
 ** Translated feeds :translated:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/8ac686f964c49222359a7e2418b56a97.xml][[TL] M-x emacs-reddit]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/8ac686f964c49222359a7e2418b56a97.xml][[TL] M-x emacs-reddit]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://old.reddit.com/r/emacs/.rss
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/3c272c3d7d43f722829a772cd5d485d2.xml][[TL] Know Your Meme Entries - Submissions]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/3c272c3d7d43f722829a772cd5d485d2.xml][[TL] Know Your Meme Entries - Submissions]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://knowyourmeme.com/memes/submissions.rss
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/d09e630ae3737d4ae281939866f973dd.xml][[TL] Urban Word of the Day]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/d09e630ae3737d4ae281939866f973dd.xml][[TL] Urban Word of the Day]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://www.urbandictionary.com/daily.rss
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/b6bc2f24a75a5f91107b36b8eb60f4cf.xml][[TL] Nature]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/b6bc2f24a75a5f91107b36b8eb60f4cf.xml][[TL] Nature]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://www.nature.com/nature.rss
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/2566f13d75ec98a9ff3ad3cf73410d63.xml][[TL] CTFtime.org: upcoming CTF events]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/2566f13d75ec98a9ff3ad3cf73410d63.xml][[TL] CTFtime.org: upcoming CTF events]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://ctftime.org/event/list/upcoming/rss/
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/64cd63f14639d138fcd9b7c71404762e.xml][[TL] Google Online Security Blog]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/64cd63f14639d138fcd9b7c71404762e.xml][[TL] Google Online Security Blog]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://security.googleblog.com/atom.xml
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/1801ac6a9838d1a917c174026ad79e23.xml][[TL] CISA News]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/1801ac6a9838d1a917c174026ad79e23.xml][[TL] CISA News]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://www.cisa.gov/news.xml
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/6607bb13cd87a6636c1bb6b9c82e2b3c.xml][[TL] Schneier on Security]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/6607bb13cd87a6636c1bb6b9c82e2b3c.xml][[TL] Schneier on Security]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://www.schneier.com/feed/
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/d529ee07a31d4053c3d3914adab6a72a.xml][[TL] The Hacker News]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/d529ee07a31d4053c3d3914adab6a72a.xml][[TL] The Hacker News]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://feeds.feedburner.com/TheHackersNews
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/27cf5ce3f0747a1ebd39345cad612a52.xml][[TL] Krebs on Security]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/27cf5ce3f0747a1ebd39345cad612a52.xml][[TL] Krebs on Security]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://krebsonsecurity.com/feed/
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/4a09f6c25eb5354938187e34d8b1be76.xml][[TL] MIT Technology Review]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/4a09f6c25eb5354938187e34d8b1be76.xml][[TL] MIT Technology Review]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://www.technologyreview.com/feed/
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/2d3794715288ef709eae3df1ca24597a.xml][[TL] Ars Technica - All content]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/2d3794715288ef709eae3df1ca24597a.xml][[TL] Ars Technica - All content]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://feeds.arstechnica.com/arstechnica/index
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/196f73e8cf4330017ab92ef17541ebea.xml][[TL] The Verge]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/0102169e52b6a27a410e7b237202fe84.xml][[TL] WIRED]]
+    :PROPERTIES:
+    :ORIGINAL-FEED: https://www.wired.com/feed/rss
+    :END:
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/196f73e8cf4330017ab92ef17541ebea.xml][[TL] The Verge]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://www.theverge.com/rss/index.xml
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/61564fca47e7cc4629bcf112ae855f4f.xml][[TL] TechCrunch]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/61564fca47e7cc4629bcf112ae855f4f.xml][[TL] TechCrunch]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://techcrunch.com/feed/
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/51e20db6f6a2b66a49436fe57ff0dbc3.xml][[TL] Zennのトレンド]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/51e20db6f6a2b66a49436fe57ff0dbc3.xml][[TL] Zennのトレンド]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://zenn.dev/feed
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/60508d99d031ee9d5acd057c74bc0291.xml][[TL] Qiita - 人気の記事]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/60508d99d031ee9d5acd057c74bc0291.xml][[TL] Qiita - 人気の記事]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://qiita.com/popular-items/feed
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/43e8d465bb1d54e3e20705275a04c90f.xml][[TL] Hacker News: Show HN]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/43e8d465bb1d54e3e20705275a04c90f.xml][[TL] Hacker News: Show HN]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://hnrss.org/show
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/a7ed0530d455a0c7ea05d3f694213e16.xml][[TL] Hacker News: Ask HN]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/a7ed0530d455a0c7ea05d3f694213e16.xml][[TL] Hacker News: Ask HN]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://hnrss.org/ask
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/3d47f6a071f9d449ad55c2dfdade9ca2.xml][[TL] Hacker News: Front Page]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/a6aa44a939125a9676705a371d4a78cf.xml][[TL] Hacker News: Best]]
     :PROPERTIES:
-    :ORIGINAL-FEED: https://hnrss.org/frontpage
+    :ORIGINAL-FEED: https://hnrss.org/best
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/a34ee2a885866974aa1f1f41131ac7b6.xml][[TL] Simon Willison's Weblog]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/a34ee2a885866974aa1f1f41131ac7b6.xml][[TL] Simon Willison's Weblog]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://simonwillison.net/atom/everything/
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/f3812e57a6e23ed746e5c82a0a176ee3.xml][[TL] Hugging Face - Blog]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/f3812e57a6e23ed746e5c82a0a176ee3.xml][[TL] Hugging Face - Blog]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://huggingface.co/blog/feed.xml
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/baffd6e07c26fa77d7bcab3e4f7f7bb4.xml][[TL] Hacker News - Newest: "LLM"]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/baffd6e07c26fa77d7bcab3e4f7f7bb4.xml][[TL] Hacker News - Newest: "LLM"]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://hnrss.org/newest?q=LLM
     :END:
-*** [[file:///c:/Users/pilrymage/.elfeed/translated/5a06e35a5a0fd6fc85d05bff0f84fcdf.xml][[TL] cs.CL updates on arXiv.org]]
+*** [[file:///c:/Users/pilrymage/.emacs.d/data/elfeed/translated/5a06e35a5a0fd6fc85d05bff0f84fcdf.xml][[TL] cs.CL updates on arXiv.org]]
     :PROPERTIES:
     :ORIGINAL-FEED: https://rss.arxiv.org/rss/cs.CL
     :END:

@@ -58,3 +58,4 @@ network-security.data
 /librime/
 /emojis/
 /tree-sitter/
+var/elfeed-translate/translate-cache.sqlite
