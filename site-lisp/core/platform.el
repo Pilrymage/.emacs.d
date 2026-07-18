@@ -28,6 +28,12 @@ to \"none\", \"off\", or an empty string to disable the Windows default.")
 Platform-specific: uses `D:/github/notes.org` on Windows,
 `~/notes.org` elsewhere.")
 
+(when (and my/windows-p (fboundp 'w32-long-file-name))
+  ;; TeX treats the tilde in an 8.3 short path as an active character.
+  (setq temporary-file-directory
+        (file-name-as-directory
+         (w32-long-file-name temporary-file-directory))))
+
 (if my/windows-p
     (custom-set-variables '(epg-gpg-program "C:/Program Files/GnuPG/bin/gpg.EXE")))
 

@@ -23,6 +23,7 @@
 
                                         ; core
 (require 'bootstrap)
+(straight-use-package '(org :branch "bugfix"))
 (require 'options)
 
                                         ; modules

@@ -21,6 +21,8 @@
   :config
   (elfeed-org))
 
+(use-package verb
+  :defer t)
 
 (provide 'apps)
 

@@ -25,6 +25,42 @@
   (setq dape-key-prefix nil
         dape-buffer-window-arrangement 'right))
 
+;; Python
+
+(defun my/python--venv-interpreter (venv)
+  "Return the Python executable in VENV when it exists."
+  (when venv
+    (let ((python (expand-file-name
+                   (if my/windows-p
+                       "Scripts/python.exe"
+                     "bin/python")
+                   venv)))
+      (when (file-executable-p python)
+        python))))
+
+(defun my/python-resolve-interpreter (&optional directory)
+  "Return the Python executable for DIRECTORY.
+Prefer a project-local .venv, then an activated virtual environment,
+and finally the platform's normal Python command."
+  (let* ((directory (or directory default-directory))
+         (project-root (locate-dominating-file directory ".venv"))
+         (project-venv (and project-root
+                            (expand-file-name ".venv" project-root))))
+    (or (my/python--venv-interpreter project-venv)
+        (my/python--venv-interpreter (getenv "VIRTUAL_ENV"))
+        (executable-find (if my/windows-p "python" "python3"))
+        (executable-find "python")
+        (executable-find "python3"))))
+
+(defun my/python--configure-buffer ()
+  "Use the Python environment associated with the current project."
+  (when-let ((python (my/python-resolve-interpreter)))
+    (setq-local python-shell-interpreter python)))
+
+(use-package python
+  :straight nil
+  :hook ((python-mode python-ts-mode) . my/python--configure-buffer))
+
 ;; Ansible and configuration files
 
 (defun my/lang--ansible-project-p ()
