@@ -81,7 +81,7 @@
     (my/leader-def
       "b" '(:ignore t :which-key "buffer")
       "b b" '(consult-buffer :which-key "switch buffer")
-      "b p" '(previous-buffer :which-key "previous")
+      "b p" '(evil-switch-to-windows-last-buffer :which-key "last buffer")
       "f" '(:ignore t :which-key "file")
       "f f" '(find-file :which-key "find file")
       "f r" '(consult-recent-file :which-key "recent files")
