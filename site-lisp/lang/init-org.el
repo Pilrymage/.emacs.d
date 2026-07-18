@@ -1,9 +1,9 @@
-;;; lang/org.el --- Org-mode setup -*- lexical-binding: t; -*-
+;;; lang/init-org.el --- Org-mode setup -*- lexical-binding: t; -*-
 
 ;; 
 (use-package org
-  :hook (((org-babel-after-execute org-mode) . org-redisplay-inline-images) ; display image
-         (visual-line-mode . org-mode))
+  :hook (((org-babel-after-execute org-mode) . org-redisplay-inline-images)
+         (org-mode . visual-line-mode))
   :config
   ;; Define a custom face for list markers
 
@@ -78,8 +78,6 @@
   :straight (org-modern-indent :type git :host github :repo "jdtsmith/org-modern-indent")
   :config
   (add-hook 'org-mode-hook #'org-modern-indent-mode 90))
-(use-package avy
-  :defer t)
 (use-package htmlize
   :defer t)
 (use-package ox-clip
@@ -202,8 +200,6 @@
   (setq org-superstar-headline-bullets-list '("●" "○" "◆" "◇" "►" "▸")
         org-superstar-item-bullet-alist
         '((?* . ?•) (?+ . ?◦) (?- . ?▪ ))))
-(use-package centered-window
-  :defer t)
 ;; Presentation
 (use-package org-tree-slide
   :diminish
@@ -235,15 +231,23 @@
 (use-package org-re-reveal
   :defer t)
 (require 'org-tempo)
-(use-package revealjs
-  :defer t
-  :straight (revealjs :host github :repo "hakimel/reveal.js" :files ("css" "dist" "js" "plugin")))
 (use-package ob-async
   :defer t)
+(use-package ob-powershell
+  :after org
+  :straight (:host github :repo "rkiggen/ob-powershell")
+  :init
+  (setq org-babel-powershell-os-command
+        (if (executable-find "pwsh") "pwsh" "powershell")))
 (use-package ox-pandoc
   :defer t)
+(use-package ox-gfm
+  :defer t
+  :straight (:host github :repo "larstvei/ox-gfm" :files ("*.el")))
 (use-package ox-hugo
   :after ox)
+(use-package anki-editor
+  :defer t)
 (use-package cdlatex
   :hook (org-mode . turn-on-org-cdlatex)
   )
@@ -316,7 +320,6 @@
                  ("magick -density %D %f -trim -antialias -quality 100 %O"))))
 
 (modify-syntax-entry ?> "w" org-mode-syntax-table)
-(modify-syntax-entry ?> "w" org-mode-syntax-table)
 
 (defun my/org-git-sync-silent ()
   "检查 Org 笔记目录是否有变动，如果有则执行静默提交和推送 (Windows 兼容版)。"
@@ -348,8 +351,5 @@
          :empty-lines 1)))
 
 (provide 'init-org)
-;; Babel
 
-(provide 'init-org)
-
-;;; lang/org.el ends here
+;;; lang/init-org.el ends here

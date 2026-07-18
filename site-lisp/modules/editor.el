@@ -88,10 +88,27 @@
       "f d" '(consult-fd :which-key "find project file")
       "f D" '(consult-dir :which-key "change directory")
       "f e" '(my/open-config-directory :which-key "Emacs config")
+      "f h" '(hexl-find-file :which-key "find file as hex")
       "s" '(:ignore t :which-key "search")
       "s l" '(consult-line :which-key "search buffer")
       "s r" '(consult-ripgrep :which-key "search project")
       "g" '(magit :which-key "Magit")
+      "d" '(:ignore t :which-key "debug")
+      "d d" '(dape :which-key "start")
+      "d g" '(gdb :which-key "GDB")
+      "d b" '(dape-breakpoint-toggle :which-key "toggle breakpoint")
+      "d B" '(dape-breakpoint-remove-all :which-key "clear breakpoints")
+      "d c" '(dape-continue :which-key "continue")
+      "d p" '(dape-pause :which-key "pause")
+      "d n" '(dape-next :which-key "next")
+      "d s" '(dape-step-in :which-key "step in")
+      "d o" '(dape-step-out :which-key "step out")
+      "d r" '(dape-restart :which-key "restart")
+      "d q" '(dape-quit :which-key "quit")
+      "d i" '(dape-info :which-key "info")
+      "d R" '(dape-repl :which-key "REPL")
+      "d m" '(dape-memory :which-key "memory")
+      "d M" '(dape-disassemble :which-key "disassembly")
       "h" '(:ignore t :which-key "help")
       "h f" '(helpful-callable :which-key "callable")
       "h v" '(helpful-variable :which-key "variable")
@@ -152,6 +169,21 @@
       "-" '(org-ctrl-c-minus :which-key "ctrl-c minus"))
 
     (my/mode-leader-def
+      :keymaps 'hexl-mode-map
+      "g" '(hexl-goto-hex-address :which-key "goto hex address")
+      "G" '(hexl-goto-address :which-key "goto decimal address")
+      "q" '(hexl-mode-exit :which-key "exit hex mode"))
+
+    (my/mode-leader-def
+      :keymaps 'gud-mode-map
+      "b" '(gud-break :which-key "breakpoint")
+      "B" '(gud-remove :which-key "remove breakpoint")
+      "c" '(gud-cont :which-key "continue")
+      "n" '(gud-next :which-key "next")
+      "s" '(gud-step :which-key "step")
+      "o" '(gud-finish :which-key "finish function"))
+
+    (my/mode-leader-def
       :keymaps 'agda2-mode-map
       "l" '(agda2-load :which-key "load")
       "b" '(agda2-previous-goal :which-key "previous goal")
@@ -164,6 +196,28 @@
       "." '(agda2-goal-and-context-and-inferred
             :which-key "goal, context, and inferred type")
       "h" '(agda2-helper-function-type :which-key "helper function type"))))
+
+(use-package helpful
+  :defer t
+  :bind (("C-h f" . helpful-callable)
+         ("C-h v" . helpful-variable)
+         ("C-h k" . helpful-key)
+         ("C-h x" . helpful-command)
+         ("C-h F" . helpful-function))
+  :config
+  (evil-set-initial-state 'helpful-mode 'normal))
+
+(use-package hexl
+  :straight nil
+  :defer t
+  :config
+  (evil-set-initial-state 'hexl-mode 'emacs))
+
+(use-package repeat
+  :straight nil
+  :demand t
+  :config
+  (repeat-mode 1))
 
 (use-package which-key
   :demand t
