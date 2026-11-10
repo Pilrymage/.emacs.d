@@ -55,6 +55,18 @@
       "C-w n" #'evil-window-left
       "C-w i" #'evil-window-right)
 
+    ;; In `visual-line-mode' (Org buffers), move by screen lines instead of
+    ;; logical lines.  `evil-respect-visual-line-mode' is left off because it
+    ;; binds QWERTY j/k/0/$, which clash with the Colemak layout (j = undo).
+    ;; Operators such as dd/yy still act on logical lines.
+    (evil-define-minor-mode-key '(normal visual) 'visual-line-mode
+      "u" #'evil-previous-visual-line
+      "e" #'evil-next-visual-line
+      "U" #'my/previous-five-visual-lines
+      "E" #'my/next-five-visual-lines
+      "N" #'evil-beginning-of-visual-line
+      "I" #'evil-end-of-visual-line)
+
     (my/evil-insert-def
       ;; Line editing
       "C-a" #'beginning-of-line
@@ -88,6 +100,7 @@
       "f d" '(consult-fd :which-key "find project file")
       "f D" '(consult-dir :which-key "change directory")
       "f e" '(my/open-config-directory :which-key "Emacs config")
+      "f l" '(my/reload-config :which-key "reload init.el")
       "f h" '(hexl-find-file :which-key "find file as hex")
       "s" '(:ignore t :which-key "search")
       "s l" '(consult-line :which-key "search buffer")
@@ -482,6 +495,41 @@
   (interactive)
   (dirvish (expand-file-name "site-lisp" user-emacs-directory)))
 
+(defvar my/--reload-config-loaded nil
+  "Files already reloaded during the current `my/reload-config' run.")
+
+(defun my/--reload-config-require (orig feature &optional filename noerror)
+  "Around advice for `require' used by `my/reload-config'.
+Reload FEATURE from its file when it lives under site-lisp/, even if it
+is already provided; defer to ORIG for everything else."
+  (let ((file (and (featurep feature)
+                   (locate-library (or filename (symbol-name feature))))))
+    (if (and file
+             (file-in-directory-p
+              file (expand-file-name "site-lisp" user-emacs-directory)))
+        (let ((base (file-name-sans-extension file)))
+          (unless (member base my/--reload-config-loaded)
+            (push base my/--reload-config-loaded)
+            (load base nil 'nomessage))
+          feature)
+      (funcall orig feature filename noerror))))
+
+(defun my/reload-config ()
+  "Reload init.el and every site-lisp module it requires, without restarting.
+`require' is a no-op for features already loaded, so it is temporarily
+advised to re-load files under site-lisp/.  `early-init.el' is not
+re-run, `defvar' values are not reset, and `after-init-hook' does not
+fire again."
+  (interactive)
+  (let ((my/--reload-config-loaded nil))
+    (advice-add 'require :around #'my/--reload-config-require)
+    (unwind-protect
+        (load user-init-file nil 'nomessage)
+      (advice-remove 'require #'my/--reload-config-require))
+    (message "Reloaded %s and %d site-lisp file(s)"
+             (file-name-nondirectory user-init-file)
+             (length my/--reload-config-loaded))))
+
 (defun my/previous-five-lines ()
   "Move point up five lines."
   (interactive)
@@ -491,6 +539,16 @@
   "Move point down five lines."
   (interactive)
   (evil-next-line 5))
+
+(defun my/previous-five-visual-lines ()
+  "Move point up five screen lines."
+  (interactive)
+  (evil-previous-visual-line 5))
+
+(defun my/next-five-visual-lines ()
+  "Move point down five screen lines."
+  (interactive)
+  (evil-next-visual-line 5))
 
 (defun modules-editor--use-emacs-state-after-tutorial (&rest _)
   "Enter Evil's Emacs state after opening the tutorial."

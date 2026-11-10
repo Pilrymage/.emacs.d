@@ -91,6 +91,90 @@
   (interactive)
   (org-hugo-export-wim-to-md :all-subtrees))
 
+;; Line width.  Widths are counted in columns: ASCII = 1, CJK = 2, so
+;; `fill-column' 80 holds 80 Latin characters or 40 Han characters.
+;; Org buffers are soft-wrapped by `visual-line-mode' inside the
+;; `writeroom-mode' margins (see ui.el), so the file is never modified.
+
+;; Break lines between CJK characters (not only at spaces) and respect
+;; kinsoku rules, so punctuation such as ，。」never starts a line.
+(setq word-wrap-by-category t)
+
+(defun my/org--refresh-text-width ()
+  "Recompute `visual-fill-column' margins after a text-scale change."
+  (when (bound-and-true-p visual-fill-column-mode)
+    (visual-fill-column-adjust)))
+
+(add-hook 'text-scale-mode-hook #'my/org--refresh-text-width)
+
+(defun my/visual-fill-column--set-margins (window)
+  "Set WINDOW margins so the text area is a fixed number of columns.
+Replacement for `visual-fill-column--set-margins'.  Upstream measures
+columns in the remapped default face, which under `mixed-pitch-mode'
+is the proportional CJK font (one column ≈ one Han character), so
+\"80 columns\" became ~80 Han characters.  Here a column is always the
+frame's monospace character width, scaled by `text-scale-mode', so 80
+columns = 80 Latin characters = 40 Han characters at any zoom level."
+  (with-current-buffer (window-buffer window)
+    (let* ((char-px (frame-char-width (window-frame window)))
+           (scale (if (bound-and-true-p text-scale-mode)
+                      (expt text-scale-mode-step text-scale-mode-amount)
+                    1.0))
+           (cols (or visual-fill-column-width fill-column))
+           (margins (window-margins window))
+           (avail-px (+ (window-body-width window t)
+                        (* char-px (+ (or (car margins) 0)
+                                      (or (cdr margins) 0)))))
+           (total (max 0 (floor (- avail-px (* cols char-px scale))
+                                char-px)))
+           (left (if visual-fill-column-center-text (/ total 2) 0))
+           (right (- total left)))
+      (when visual-fill-column-extra-text-width
+        (setq left (max 0 (- left (car visual-fill-column-extra-text-width)))
+              right (max 0 (- right (cdr visual-fill-column-extra-text-width)))))
+      (when (and (eq bidi-paragraph-direction 'right-to-left) (= left 0))
+        (setq left right right 0))
+      (set-window-margins window left right))))
+
+(with-eval-after-load 'visual-fill-column
+  (advice-add 'visual-fill-column--set-margins
+              :override #'my/visual-fill-column--set-margins))
+
+(defun my/org-check-line-width (&optional width)
+  "List lines in the current buffer wider than WIDTH columns.
+WIDTH defaults to `fill-column'; CJK characters count as two
+columns.  Src blocks, tables, and link-only lines are skipped.
+Only meaningful for hard-wrapped text."
+  (interactive "P")
+  (let* ((width (if width (prefix-numeric-value width) fill-column))
+         (source (current-buffer))
+         (file (or (buffer-file-name) (buffer-name)))
+         (hits '()))
+    (save-excursion
+      (goto-char (point-min))
+      (while (not (eobp))
+        (let* ((line (buffer-substring-no-properties
+                      (line-beginning-position) (line-end-position)))
+               (cols (string-width line)))
+          (when (and (> cols width)
+                     (not (string-match-p "\\`[ \t]*\\(|\\|#\\+\\|\\[\\[[^] ]+\\]\\]\\'\\)" line))
+                     (not (and (derived-mode-p 'org-mode)
+                               (org-in-src-block-p t))))
+            (push (format "%s:%d:%d: %d columns (> %d)\n"
+                          file (line-number-at-pos) (1+ width) cols width)
+                  hits)))
+        (forward-line 1)))
+    (with-current-buffer (get-buffer-create "*Line Width*")
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (insert (format "-*- line width check: %s, limit %d -*-\n\n"
+                        (buffer-name source) width))
+        (apply #'insert (nreverse hits))
+        (compilation-mode)
+        (goto-char (point-min)))
+      (display-buffer (current-buffer)))
+    (message "%d line(s) wider than %d columns" (length hits) width)))
+
 (use-package org
   :straight nil
   :hook ((org-mode . visual-line-mode)
