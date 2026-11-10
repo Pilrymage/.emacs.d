@@ -1,8 +1,23 @@
 ;;; lang/init-org.el --- Org-mode writing environment -*- lexical-binding: t; -*-
 
 (require 'subr-x)
+(require 'seq)
 
 ;; Core editing
+
+(defconst my/org--unpaired-opening-chars '(?< ?‘ ?“)
+  "Opening characters that should remain unpaired in Org buffers.")
+
+(defun my/org--electric-pair-inhibit-p (char)
+  "Return non-nil when Electric Pair should not pair CHAR in Org buffers."
+  (or (memq char my/org--unpaired-opening-chars)
+      (let ((predicate (default-value 'electric-pair-inhibit-predicate)))
+        (and predicate (funcall predicate char)))))
+
+(defun my/org--configure-electric-pair ()
+  "Leave Org Tempo's `<` and Chinese opening quotes unpaired."
+  (setq-local electric-pair-inhibit-predicate
+              #'my/org--electric-pair-inhibit-p))
 
 (defconst my/org--cjk-emphasis-spacing-keywords
   '(("\\cc\\( \\)[*/_=~+]\\cc.*?[*/_=~+]"
@@ -178,6 +193,7 @@ Only meaningful for hard-wrapped text."
 (use-package org
   :straight nil
   :hook ((org-mode . visual-line-mode)
+         (org-mode . my/org--configure-electric-pair)
          (org-mode . my/org--configure-babel-python)
          (org-babel-after-execute . org-redisplay-inline-images))
   :init
@@ -302,6 +318,17 @@ Only meaningful for hard-wrapped text."
           "\\pagestyle{empty}")
   "XeLaTeX header used only for Org fragment previews.")
 
+(defun my/org--create-formula-image-from-temp-directory
+    (function &rest arguments)
+  "Run Org preview FUNCTION with ARGUMENTS from its temporary directory.
+
+This avoids a dvisvgm Windows error when an Org buffer and the
+system temporary directory are on different drive letters."
+  (let ((default-directory
+         (file-name-as-directory
+          (expand-file-name temporary-file-directory))))
+    (apply function arguments)))
+
 (use-package cdlatex
   :hook (org-mode . turn-on-org-cdlatex))
 
@@ -311,7 +338,35 @@ Only meaningful for hard-wrapped text."
 (use-package org-fragtog
   :hook (org-mode . org-fragtog-mode))
 
+(defvar my/org-latex-preview-base-scale 1.0
+  "LaTeX preview scale at zoom level 0; multiplied by the text-scale factor.")
+
+(defun my/org--latex-preview-follow-text-scale ()
+  "Re-render LaTeX previews in this Org buffer at the current zoom level."
+  (when (derived-mode-p 'org-mode)
+    (let ((factor (if (bound-and-true-p text-scale-mode)
+                      (expt text-scale-mode-step text-scale-mode-amount)
+                    1.0)))
+      (setq-local org-format-latex-options
+                  (plist-put (copy-sequence
+                              (default-value 'org-format-latex-options))
+                             :scale (* my/org-latex-preview-base-scale factor)))
+      ;; Only re-render when previews are actually shown.  Images are
+      ;; cached per scale in ltximg/, so zooming back is cheap.
+      (when (seq-some (lambda (ov)
+                        (eq (overlay-get ov 'org-overlay-type)
+                            'org-latex-overlay))
+                      (overlays-in (point-min) (point-max)))
+        (org-latex-preview '(64))       ; clear all in buffer
+        (org-latex-preview '(16))))))   ; preview all in buffer
+
+(add-hook 'text-scale-mode-hook #'my/org--latex-preview-follow-text-scale)
+
 (with-eval-after-load 'org
+  (when my/windows-p
+    (advice-add
+     #'org-create-formula-image :around
+     #'my/org--create-formula-image-from-temp-directory))
   (setq org-preview-latex-default-process
         (if (and (executable-find "xelatex")
                  (executable-find "dvisvgm")
@@ -323,7 +378,8 @@ Only meaningful for hard-wrapped text."
             (plist-put (cdr process)
                        :latex-header my/org--latex-preview-header)))
   (setq org-format-latex-options
-        (plist-put org-format-latex-options :scale 1.5)))
+        (plist-put org-format-latex-options
+                   :scale my/org-latex-preview-base-scale)))
 
 ;; Export and Babel extensions
 
@@ -336,6 +392,190 @@ Only meaningful for hard-wrapped text."
   :init
   (setq org-babel-powershell-os-command
         (if (executable-find "pwsh") "pwsh" "powershell")))
+
+;; Notes auto-sync: commit local changes first, then rebase onto the remote
+;; and push.  Output goes to *org-git-sync*; only failures are reported.
+
+(defvar my/org-git-sync-interval (* 20 60)
+  "Seconds between automatic syncs of `my/org-notes-repository'.")
+
+(defvar my/org-git-sync-timer nil
+  "The single timer driving `my/org-git-sync-silent'.")
+
+(defun my/org-git-sync--commit-command ()
+  "Return a shell command that commits all changes, if there are any."
+  (format "git add -A && (git diff --cached --quiet || git commit -q -m \"Auto-sync: %s\")"
+          (format-time-string "%Y-%m-%d %H:%M:%S")))
+
+(defun my/org-git-sync--sentinel (process _event)
+  "Report a failed sync PROCESS."
+  (when (and (memq (process-status process) '(exit signal))
+             (/= (process-exit-status process) 0))
+    (message "Org-sync: 同步失败（退出码 %d），详见 %s"
+             (process-exit-status process)
+             (buffer-name (process-buffer process)))))
+
+(defun my/org-git-sync-silent ()
+  "Commit, pull --rebase and push the Org notes repository in the background."
+  (interactive)
+  (let ((default-directory (file-name-as-directory my/org-notes-repository)))
+    (when (and (file-directory-p default-directory)
+               (not (process-live-p (get-process "org-git-sync"))))
+      (let ((buffer (get-buffer-create "*org-git-sync*")))
+        (with-current-buffer buffer
+          (let ((inhibit-read-only t)) (erase-buffer)))
+        (set-process-sentinel
+         (start-process-shell-command
+          "org-git-sync" buffer
+          (concat (my/org-git-sync--commit-command)
+                  " && git pull --rebase -q && git push -q"))
+         #'my/org-git-sync--sentinel)))))
+
+(defun my/org-git-sync-on-exit ()
+  "Commit pending note changes synchronously before Emacs exits.
+Pushing is left to the next sync, so exiting never waits on the network."
+  (let ((default-directory (file-name-as-directory my/org-notes-repository)))
+    (when (file-directory-p default-directory)
+      (call-process-shell-command (my/org-git-sync--commit-command)))))
+
+;; Keep exactly one timer, even when this file is reloaded.
+(when (timerp my/org-git-sync-timer)
+  (cancel-timer my/org-git-sync-timer))
+(setq my/org-git-sync-timer
+      (run-at-time 60 my/org-git-sync-interval #'my/org-git-sync-silent))
+(add-hook 'kill-emacs-hook #'my/org-git-sync-on-exit)
+
+;; Real-time HTML preview in an external browser (Firefox etc.)
+;; maple-preview runs a local websocket server and pushes re-exported HTML
+;; to the browser page on every change (no save needed).
+
+(use-package websocket
+  :straight t)
+
+(defconst my/maple-preview-org-style
+  "<style id=\"my-maple-preview-org-content\">
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+}
+body {
+  box-sizing: border-box;
+  padding: 2rem 0 4rem;
+  color: #24292f;
+  background: #fff;
+  font-family: system-ui, -apple-system, \"Segoe UI\", \"Microsoft YaHei\", sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+}
+#content {
+  box-sizing: border-box;
+  width: calc(100% - 3rem);
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+.title {
+  margin: 0 0 2rem;
+  line-height: 1.25;
+}
+.outline-2,
+.outline-3,
+.outline-4 {
+  margin-top: 2rem;
+}
+pre, table {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+  white-space: pre;
+}
+img, video, iframe {
+  max-width: 100%;
+}
+</style>"
+  "Additional CSS used only by the live Org preview.")
+
+(defun my/maple-preview-org-html-content ()
+  "Export the current Org buffer as HTML with preview-only layout CSS."
+  (let ((html (maple-preview-html-content)))
+    (replace-regexp-in-string
+     "</head>"
+     (concat my/maple-preview-org-style "</head>")
+     html t t)))
+
+(defconst my/maple-preview-layout-style
+  "<style id=\"my-maple-preview-layout\">
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden;
+}
+.container {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+#preview.markdown-body {
+  box-sizing: border-box;
+  width: 100vw;
+  min-width: 0;
+  max-width: none;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+#preview > iframe {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  inset: 0 !important;
+  display: block !important;
+  box-sizing: border-box !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  overflow: auto !important;
+}
+</style>"
+  "Shell CSS that keeps maple-preview's iframe flush with the viewport.
+Upstream creates the iframe with an inline position:absolute and no
+left/top, so it can start mid-viewport and overflow horizontally; the
+!important rules here override those inline styles.")
+
+(defun my/maple-preview--windows-newline-fix (text)
+  "Replace LF with CR in websocket TEXT (fix from maple-preview's README)."
+  (replace-regexp-in-string "\n" "\r" text))
+
+(use-package maple-preview
+  :straight (:host github :repo "honmaple/emacs-maple-preview"
+                   :files ("*.el" "index.html" "static"))
+  :commands (maple-preview-mode)
+  :custom
+  (maple-preview-render-modes '(org-mode markdown-mode html-mode web-mode))
+  (maple-preview-auto-update t)
+  (maple-preview-auto-scroll t)
+  (maple-preview-auto-browser t)
+  ;; Org is exported as HTML (not downsourced to markdown) so LaTeX/fragments
+  ;; travel through; MathJax handles the formulas in the browser page.
+  (maple-preview-render-alist '((org-mode . my/maple-preview-org-html-content)
+                                (t . maple-preview-markdown-content)))
+  :config
+  (add-to-list 'maple-preview-styles my/maple-preview-layout-style t)
+  ;; maple-preview's websocket breaks on Windows CRLF newlines upstream.
+  (when my/windows-p
+    (advice-add 'maple-preview-websocket-text :filter-return
+                #'my/maple-preview--windows-newline-fix)))
 
 (provide 'init-org)
 

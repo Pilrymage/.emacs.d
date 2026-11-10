@@ -133,7 +133,7 @@
       "o" '(:ignore t :which-key "open")
       "o c" '(org-capture :which-key "capture")
       "o d" '(dirvish :which-key "Dirvish")
-      "o e" '(elfeed :which-key "Elfeed")
+      ;; "o e" '(elfeed :which-key "Elfeed")  ; elfeed disabled
       "o j" '(org-journal-new-entry :which-key "new journal entry")
       "o J" '(org-journal-open-current-journal-file :which-key "today's journal")
       "o s" '(dirvish-side :which-key "Dirvish sidebar")
@@ -230,7 +230,7 @@
          ("C-h x" . helpful-command)
          ("C-h F" . helpful-function))
   :config
-  (evil-set-initial-state 'helpful-mode 'normal))
+  (evil-set-initial-state 'helpful-mode 'emacs))
 
 (use-package hexl
   :straight nil
@@ -256,7 +256,7 @@
   :init
   (setq evil-want-Y-yank-to-eol t
         evil-want-abbrev-expand-on-insert-exit nil
-        evil-respect-visual-line-mode t
+        evil-respect-visual-line-mode nil
         evil-want-C-g-bindings t
         evil-want-C-i-jump nil
         evil-want-C-u-scroll nil

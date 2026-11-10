@@ -74,14 +74,18 @@
                (modules-apps--elfeed-point-on-last-window-line-p window))
       (recenter 0))))
 
+;; elfeed is currently disabled: `:straight nil' keeps straight from
+;; installing or activating it, so nothing below ever loads.
 (use-package elfeed
+  :straight nil
   :defer t
   :hook (elfeed-search-mode . modules-apps--elfeed-search-setup)
   :init
   (setq elfeed-db-directory (concat data-dir "elfeed/")
         elfeed-search-trailing-width 10
         elfeed-search-title-max-width 120
-        elfeed-search-filter "@1-month-ago +unread -translate_title")
+        elfeed-search-filter "@1-month-ago +unread -translate_title"
+        elfeed-curl-program-name "C:/Users/pilrymage/scoop/apps/curl/current/bin/curl.exe")
   :config
   (setq elfeed-curl-extra-arguments
         (when my/proxy-url
@@ -98,6 +102,7 @@
     (evil-set-initial-state 'elfeed-search-mode 'emacs)
     (evil-set-initial-state 'elfeed-show-mode 'emacs)))
 (use-package elfeed-org
+  :straight nil
   :after elfeed
   :config
   (elfeed-org))

@@ -42,44 +42,58 @@ an explicitly unibyte string suitable for HTTP authorization headers."
   :config
   (setq org-hydrus-api-key (my/auth-get "hydrus")))
 
+;; (use-package elfeed-reader-sync
+;;   :straight (:type nil :local-repo "D:/github/elfeed-reader")
+;;   :after elfeed
+;;   :config
+;;   (setq elfeed-reader-sync-endpoint
+;;         "https://elfeed-reader-sync.for156th.workers.dev"
+;;         elfeed-reader-sync-source-id "default"
+;;         elfeed-reader-sync-batch-size 500
+;;         elfeed-reader-sync-interval 900)
+;;   (elfeed-reader-sync-mode 1))
 
 
+;; Disabled together with elfeed (see apps.el).  To re-enable, restore
+;; :straight (:type nil :local-repo "D:/github/elfeed-translate").
 (use-package elfeed-translate
-  :straight (:type nil :local-repo "D:/github/elfeed-translate")
+  :straight nil
   :after elfeed
   :custom
-
   (elfeed-translate-target-lang "Chinese")
   (elfeed-translate-title-style 'target-first)
   (elfeed-translate-parallel t)
   (elfeed-translate-batch-size 50)
+  (elfeed-translate-content-batch-size 3)
+  ;; (elfeed-translate-content-max-char nil)
   :config
   ;; (elfeed-translate-api-key (my/auth-get "zai"))
   ;; (elfeed-translate-api-url "https://open.bigmodel.cn/api/paas/v4/chat/completions")
   ;; (elfeed-translate-model "glm-4-flash-250414")
-  (setq
-   elfeed-translate-api-key (my/auth-get "opencode" t)
-   elfeed-translate-api-url "https://opencode.ai/zen/go/v1/chat/completions" 
-   elfeed-translate-model "deepseek-v4-flash"
-   elfeed-translate-max-concurrent 4)
+  ;; (setq
+  ;;  elfeed-translate-api-key (my/auth-get "opencode" t)
+  ;;  elfeed-translate-api-url "https://opencode.ai/zen/go/v1/chat/completions" 
+  ;;  elfeed-translate-model "deepseek-v4-flash"
+  ;;  elfeed-translate-max-concurrent 4)
   ;; (setq
   ;;  elfeed-translate-api-key (my/auth-get "opencode" t)
   ;;  elfeed-translate-api-url "https://opencode.ai/zen/v1/chat/completions" 
   ;;  elfeed-translate-model "deepseek-v4-flash-free"
   ;;  elfeed-translate-max-concurrent 1)
-  ;; (setq
-  ;;  elfeed-translate-api-key (my/auth-get "opencode" t)
-  ;;  elfeed-translate-api-url "https://opencode.ai/zen/v1/chat/completions" 
-  ;;  elfeed-translate-model "mimo-v2.5-free"
-  ;;  elfeed-translate-max-concurrent 1)
+  (setq
+   elfeed-translate-api-key (my/auth-get "opencode2" t)
+   elfeed-translate-api-url "https://opencode.ai/zen/go/v1/chat/completions" 
+   elfeed-translate-model "mimo-v2.5"
+   elfeed-translate-max-concurrent 2)
 
   ;; (setq
-  ;;  elfeed-translate-api-key (my/auth-get "deepseek" t)
+  ;;  elfeed-translate-api-key (my/auth-get "deepseek" t) 
   ;;  elfeed-translate-api-url "https://api.deepseek.com/chat/completions"
   ;;  elfeed-translate-model "deepseek-v4-flash"
   ;;  elfeed-translate-max-concurrent 2)
   (setq elfeed-translate-debug t)
-  (setq elfeed-translate-auto-refresh t)
+  (setq elfeed-translate-request-timeout 180)
+  (setq elfeed-translate-auto-refresh nil)
   (global-elfeed-translate-mode 1)
   )
 
